@@ -1,0 +1,43 @@
+{
+  "extension": {
+    "index": 1,
+    "length": 1
+  },
+  "structure": {
+    "division": 5,
+    "subtuples": [
+      {
+        "extension": {
+          "index": 1,
+          "length": 4
+        },
+        "structure": {
+          "division": 3,
+          "subtuples": [
+            {
+              "extension": {
+                "index": 1,
+                "length": 1
+              },
+              "structure": {
+                "division": 3,
+                "subtuples": [
+                  {
+                    "extension": {
+                      "index": 2,
+                      "length": 1
+                    },
+                    "structure": {
+                      "division": 7,
+                      "subtuples": []
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

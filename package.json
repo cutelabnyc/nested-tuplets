@@ -1,0 +1,17 @@
+{
+  "name": "rhythm-parser",
+  "version": "0.1.0",
+  "description": "Parse a special hierarchical tuplet syntax, get a bunch of midi notes",
+  "main": "index.js",
+  "author": "Sam Tarakajian",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "moo": "^0.5.1",
+    "nearley": "^2.19.6"
+  },
+  "scripts": {
+    "build": "mkdir -p build && nearleyc grammar.ne --out ./build/grammar.js",
+    "start": "node index.js"
+  }
+}
