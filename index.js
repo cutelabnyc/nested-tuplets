@@ -7,7 +7,7 @@ const midiWriter = require("midi-writer-js");
 const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
 
 // Parse something!
-const testRhythm = fs.readFileSync("inputs/complex.rhy", "utf8");
+const testRhythm = fs.readFileSync("inputs/nested.rhy", "utf8");
 parser.feed(testRhythm);
 
 // parser.results is an array of possible parsings.
