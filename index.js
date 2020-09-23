@@ -1,12 +1,13 @@
 const nearley = require("nearley");
 const grammar = require("./build/grammar.js");
 const fs = require("fs");
+const midiWriter = require("midi-writer-js");
 
 // Create a Parser object from our grammar.
 const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
 
 // Parse something!
-const testRhythm = fs.readFileSync("inputs/nested.rhy", "utf8");
+const testRhythm = fs.readFileSync("inputs/complex.rhy", "utf8");
 parser.feed(testRhythm);
 
 // parser.results is an array of possible parsings.
@@ -59,7 +60,22 @@ class NestedTuplet {
 			});
 		});
 
-		return out.sort();
+		// sort
+		out = out.sort();
+
+		// Filter duplicates
+		let i = 0;
+		while (i < out.length) {
+			if (i >= (out.length - 1))
+				break;
+			if (out[i] === out[i + 1]) {
+				out.splice(i, 1);
+			} else {
+				i++;
+			}
+		}
+
+		return out;
 	}
 
 	intersects(onsetTime) {
@@ -70,4 +86,20 @@ class NestedTuplet {
 const nt = new NestedTuplet(results);
 const times = nt.normalizedOnsetTimes();
 console.log(times);
-fs.writeFileSync("times.json", JSON.stringify(times, null, 2));
+
+// Assume 4 beats to one measure
+const track = new midiWriter.Track();
+times.forEach((time, idx) => {
+	const nextEventTime = idx < (times.length - 1) ? times[idx + 1] : 1.0;
+	const thisEventTicks = Math.floor(time * 128 * 4);
+	const nextEventTicks = Math.floor(nextEventTime * 128 * 4);
+	console.log(thisEventTicks);
+	console.log(nextEventTicks - thisEventTicks);
+	track.addEvent(new midiWriter.NoteEvent({
+		pitch: "C3",
+		duration: "T" + (nextEventTicks - thisEventTicks)
+	}));
+});
+
+const write = new midiWriter.Writer(track);
+write.saveMIDI("out");
