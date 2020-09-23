@@ -12,6 +12,13 @@ discontinuous-range@1.0.0:
   resolved "https://registry.yarnpkg.com/discontinuous-range/-/discontinuous-range-1.0.0.tgz#e38331f0844bba49b9a9cb71c771585aab1bc65a"
   integrity sha1-44Mx8IRLukm5qctxx3FYWqsbxlo=
 
+midi-writer-js@^1.7.4:
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/midi-writer-js/-/midi-writer-js-1.7.4.tgz#7ee7c36c0fae6aa7574ef2a24186d02660a0c237"
+  integrity sha512-Qpou6O+G8G3ZhDyzGwKjm9Tj2u5YeEFVcxB8MAy7nGuq3Ii8DJlOaqHEllS9n+tq6l2FSExgLJz+d3hwrF8UZQ==
+  dependencies:
+    tonal-midi "^0.69.7"
+
 moo@^0.5.0, moo@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/moo/-/moo-0.5.1.tgz#7aae7f384b9b09f620b6abf6f74ebbcd1b65dbc4"
@@ -27,6 +34,11 @@ nearley@^2.19.6:
     railroad-diagrams "^1.0.0"
     randexp "0.4.6"
     semver "^5.4.1"
+
+note-parser@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/note-parser/-/note-parser-2.0.1.tgz#2438fd57a46894b402b3a2071798660129c8fbc1"
+  integrity sha1-JDj9V6RolLQCs6IHF5hmASnI+8E=
 
 railroad-diagrams@^1.0.0:
   version "1.0.0"
@@ -50,3 +62,10 @@ semver@^5.4.1:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
   integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
+
+tonal-midi@^0.69.7:
+  version "0.69.7"
+  resolved "https://registry.yarnpkg.com/tonal-midi/-/tonal-midi-0.69.7.tgz#e754ec93f3dbdb28a6d39d42457c33ad245ffa47"
+  integrity sha1-51Tsk/Pb2yim051CRXwzrSRf+kc=
+  dependencies:
+    note-parser "^2.0.1"
