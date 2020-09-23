@@ -10,5 +10,8 @@ const testRhythm = fs.readFileSync("inputs/nested.rhy", "utf8");
 parser.feed(testRhythm);
 
 // parser.results is an array of possible parsings.
-console.log(parser.results[0]);
+const results = parser.results[0];
+console.log(results);
 fs.writeFileSync("out.json", JSON.stringify(parser.results[0], null, 2));
+
+// Make a rhythm from the result
