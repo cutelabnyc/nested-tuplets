@@ -1,0 +1,41 @@
+velocity: numbers in [] represent MIDI value 0-127
+0 vel = rest
+
+(1, 1){ 5 [120, 120, 120, 120, 127]
+    (1, 4) {3 [60, 0, 50]}
+}
+
+
+we could also have some shorthand
+
+one vel number alone could apply that velocity to all events in that tuplet
+no vel number given could apply a default value of 120 or something
+a global default could also be defined before initial paren
+
+
+(1, 1){ 5 [120]
+    (1, 4) {3 [60, 5, 50]}
+}
+
+
+[110](1, 1){ 5 
+    (1, 4) {3}
+}
+
+note length: number in <> represents % of time between events 0-100
+
+(1, 1){ 5 [120] <50, 50, 100, 50, 50>
+    (1, 4) {3 [60, 5, 50] <100, 5, 50>}
+}
+
+one len number alone could apply that length to all events in that tuplet
+no len number given could apply a default value of 60 or something
+a global default could also be defined before initial paren
+
+(1, 1){ 5 [120] <50>
+    (1, 4) {3 [60, 5, 50] <100>}
+}
+
+[110]<50>(1, 1){ 5
+    (1, 4) {3 [60, 5, 50]}
+}
