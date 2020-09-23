@@ -5,10 +5,15 @@ velocity: numbers in [] represent MIDI value 0-127
     (1, 4) {3 [60, 0, 50]}
 }
 
+(1, 1){ 5 [120 ..= 127]
+    (1, 4) {3 [60, 0, 50]}
+}
+
 
 we could also have some shorthand
 
-one vel number alone could apply that velocity to all events in that tuplet
+one vel number followed by - applies that velocity to all events in that tuplet
+vel number followed by - applies that velocity to remaining events
 no vel number given could apply a default value of 120 or something
 a global default could also be defined before initial paren
 
@@ -32,10 +37,68 @@ one len number alone could apply that length to all events in that tuplet
 no len number given could apply a default value of 60 or something
 a global default could also be defined before initial paren
 
-(1, 1){ 5 [120] <50>
+(1, 1){ 5 [120] <50 .. 100>
     (1, 4) {3 [60, 5, 50] <100>}
 }
 
 [110]<50>(1, 1){ 5
     (1, 4) {3 [60, 5, 50]}
 }
+
+
+[range of indices : range of values , ]
+[i-n] : default]
+
+i increments with index assignment OR is assigned by the terminal value in a range
+
+# follows same logic as -, but noise rather than interpolation (only works for values, not index)
+
+* applies preceding value(s)/pattern to subsequent events
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---/* no longer true:
+
+..= range inclusive
+.. range exclusive
+
+#.. noise within range inclusive
+#..= noise within range inclusive
+
+- extend value over subsequent events
+* applies preceding value(s) to subsequent events
+
+
+{5 [120-]}
+{5 [120, 90-]}
+{5 [120, 90, *]}
+{5 [120, *]}
+{5 [120] <50, 100, *>}
+
+
+
+
+
+(1, 1){ 5 [120| 1:110, n: 127, m: 127]
+    (1, 4) {3 [60, 5, 50]}
+}
+
+[100](1,1){5 [| 3: 0]}
+
+[100](1,1){17 [90 ..= 127| 2 ..= 12: 0]} 
+
+*/---
+
+
+
