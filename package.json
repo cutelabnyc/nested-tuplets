@@ -7,13 +7,14 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "commander": "^6.1.0",
     "midi-writer-js": "^1.7.4",
     "moo": "^0.5.1",
     "nearley": "^2.19.6"
   },
   "scripts": {
     "postinstall": "yarn run build",
-    "build": "mkdir -p build && nearleyc grammar.ne --out ./build/grammar.js",
+    "build": "mkdir -p src/build && nearleyc grammar/grammar.ne --out ./src/build/grammar.js",
     "start": "node index.js"
   }
 }
