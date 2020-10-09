@@ -2,7 +2,7 @@
 	"name" : "nestup",
 	"version" : 1,
 	"creationdate" : 3684812322,
-	"modificationdate" : 3684813979,
+	"modificationdate" : 3685075856,
 	"viewrect" : [ 120.0, 159.0, 300.0, 500.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 0,
@@ -50,6 +50,19 @@
 					"projectrelativepath" : ".."
 				}
 
+			}
+
+		}
+,
+		"other" : 		{
+			"nestup-editor.html" : 			{
+				"kind" : "webpage",
+				"local" : 1
+			}
+,
+			"nestup-style.css" : 			{
+				"kind" : "stylesheet",
+				"local" : 1
 			}
 
 		}
