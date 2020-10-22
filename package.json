@@ -10,6 +10,7 @@
     "codemirror": "^5.58.1",
     "commander": "^6.1.0",
     "midi-writer-js": "^1.7.4",
+    "mocha": "^8.2.0",
     "moo": "^0.5.1",
     "nearley": "^2.19.6"
   },
