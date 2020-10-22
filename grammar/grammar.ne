@@ -10,7 +10,7 @@ const lexer = moo.compile({
   comma: /,/,
   rp: /\)/,
   lb: /\{/,
-  rb: /\}/
+  rb: /\}/,
 	ls: /\[/,
 	rs: /\]/,
 });
@@ -30,7 +30,7 @@ const dpd = { length: 1, beatRatio: dbr };
 nestup -> phrase:* _:?
 
 phrase ->
-	  _:? structure {% d => { dimension: dpd, structure: d[1] } %}
+	  _:? structure {% d => { return { dimension: dpd, structure: d[1] }} %}
 	| _:? phrase_dimension _:? structure {% d => { return { dimension: d[1], structure: d[3] }} %}
 
 phrase_dimension ->

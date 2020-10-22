@@ -7,6 +7,7 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "chai": "^4.2.0",
     "codemirror": "^5.58.1",
     "commander": "^6.1.0",
     "midi-writer-js": "^1.7.4",
@@ -17,6 +18,7 @@
   "scripts": {
     "postinstall": "yarn run build",
     "build": "mkdir -p src/build && nearleyc grammar/grammar.ne --out ./src/build/grammar.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "mocha"
   }
 }
