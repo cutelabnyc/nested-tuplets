@@ -7,6 +7,7 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "codemirror": "^5.58.1",
     "commander": "^6.1.0",
     "midi-writer-js": "^1.7.4",
     "moo": "^0.5.1",
