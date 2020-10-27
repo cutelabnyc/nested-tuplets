@@ -27,22 +27,30 @@ const dpd = { length: 1, beatRatio: dbr };
 # Pass your lexer object using the @lexer option:
 @lexer lexer
 
-nestup -> phrase:* _:?
+# A nestup is zero or more phrases
+nestup -> phrase:* _:? {% d => (d[0] ? d[0] : []) %}
 
+# A phrase is just structure, with an optional phrase dimension
 phrase ->
 	  _:? structure {% d => { return { dimension: dpd, structure: d[1] }} %}
 	| _:? phrase_dimension _:? structure {% d => { return { dimension: d[1], structure: d[3] }} %}
 
+# A phrase dimention is a beat length with an optional beat ratio
 phrase_dimension ->
 	  %ls _:? number _:? %rs {% d => { return { length: d[2], beatRatio: dbr }} %}
 	| %ls _:? number _:? %comma _:? number _:? %rs {% d => { return { length: d[2], beatRatio: d[6] }} %}
 
-structure -> %lb _:? number tuple:* _:? %rb {% d => {return { division: d[2], subtuples: d[3] }} %}
+# Structure is just a number of subdivisions followed by a list of tuplets
+structure -> %lb _:? number tuplet:* _:? %rb {% d => {return { division: d[2], subtuplets: d[3] }} %}
 
-tuple -> _:? extension _:? structure {% d => {return { extension: d[1], structure: d[3] }} %}
+# A tuplet is a tuplet extension followed by a structure
+tuplet -> _:? extension _:? structure {% d => {return { extension: d[1], structure: d[3] }} %}
 
+# A tuplet extension is an index followed by a length
 extension -> %lp _:? number _:? %comma _:? number _:? %rp {% d => {return { index: d[2], length: d[6] }} %}
 
+# A number is, well, a number
 number -> %unsigned_integer_tk {% d => parseInt(d.join("")) %}
 
+# Whitespace
 _ -> %ws {% d => { return null; } %}
