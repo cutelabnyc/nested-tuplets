@@ -10,11 +10,14 @@ function normalizedOnsetTimes(phrases) {
 	let beatOffset = 0;
 	let onsets = [];
 	phrases.forEach(p => {
-		const { length, beatRatio, normalizedOnsetTimes } = p;
-		const scaledOnsetTimes = normalizedOnsetTimes.map(t => t / (length * beatRatio) + beatOffset);
-		beatOffset += (1.0 / (length * beatRatio));
+		const { length, beatRatio } = p;
+		const times = p.normalizedOnsetTimes();
+		const scaledOnsetTimes = times.map(t => (beatOffset + (length * beatRatio / totalBeats) * t));
+		beatOffset += (length * beatRatio) / totalBeats;
 		onsets = onsets.concat(scaledOnsetTimes);
 	});
+
+	return onsets;
 }
 
 function process(text) {

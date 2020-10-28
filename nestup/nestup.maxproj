@@ -2,8 +2,8 @@
 	"name" : "nestup",
 	"version" : 1,
 	"creationdate" : 3684812322,
-	"modificationdate" : 3685075856,
-	"viewrect" : [ 120.0, 159.0, 300.0, 500.0 ],
+	"modificationdate" : 3686744318,
+	"viewrect" : [ 79.0, 151.0, 300.0, 500.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 0,
 	"showdependencies" : 1,
@@ -37,6 +37,11 @@
 					"projectrelativepath" : ".."
 				}
 
+			}
+,
+			"nestup-editor.js" : 			{
+				"kind" : "javascript",
+				"local" : 1
 			}
 
 		}
