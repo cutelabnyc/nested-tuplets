@@ -13,6 +13,7 @@ const lexer = moo.compile({
   rb: /\}/,
 	ls: /\[/,
 	rs: /\]/,
+	slash: /\//,
 });
 %}
 
@@ -39,6 +40,7 @@ phrase ->
 phrase_dimension ->
 	  %ls _:? number _:? %rs {% d => { return { length: d[2], beatRatio: dbr }} %}
 	| %ls _:? number _:? %comma _:? number _:? %rs {% d => { return { length: d[2], beatRatio: d[6] }} %}
+	| %ls _:? number _:? %comma _:? number _:? %slash _:? number _:? %rs {% d => { return { length: d[2], beatRatio: d[6] / d[10] }} %}
 
 # Structure is just a number of subdivisions followed by a list of tuplets
 structure -> %lb _:? number tuplet:* _:? %rb {% d => {return { division: d[2], subtuplets: d[3] }} %}
