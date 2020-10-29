@@ -20,20 +20,50 @@ window.max.bindInlet("text", (text) => {
 	}
 });
 
-window.max.bindInlet("mark", (line, col, token, _message) => {
+window.max.bindInlet("mark", (line, col, token, message) => {
 	if (myCodeMirror) {
-		// Mark the token
-		myCodeMirror.markText({line, ch: col}, {line, ch: col + token.length}, { className: "errortext" });
+		// If there's a token, mark it
+		if (token) {
+			const parsedToken = (token === "##comma##" ? "," : token);
+			console.log(`Marking token ${parsedToken} at line ${line} col ${col}`);
+			myCodeMirror.markText({line, ch: col}, {line, ch: col + parsedToken.length}, { className: "errortext" });
+		}
+
+		// Otherwise mark the whole line
+		else {
+			const lineText = myCodeMirror.getLine(line);
+			myCodeMirror.markText({line, ch: 0}, {line, ch: lineText.length}, { className: "errortext" });
+		}
+
+		const errorBox = document.getElementsByClassName("errorBox")[0];
+		errorBox.textContent = message;
+		errorBox.hidden = false;
 	}
 });
+
+function clearErrorBox() {
+	const errorBox = document.getElementsByClassName("errorBox")[0];
+	errorBox.textContent = "";
+	errorBox.hidden = true;
+}
 
 myCodeMirror.on("change", () => {
 	const text = myCodeMirror.getValue();
 	if (text) sendTextToMax(text);
+
+	const marks = myCodeMirror.getAllMarks();
+	if (marks.length === 0) {
+		clearErrorBox();
+	}
 });
 
 myCodeMirror.on("keydown", (_instance, event) => {
 	if (event.shiftKey && event.key === "Enter") {
+
+		const marks = myCodeMirror.getAllMarks();
+		marks.forEach(mark => mark.clear());
+		clearErrorBox();
+
 		if (window.max) {
 			window.max.outlet.apply(window.max, ["submit"]);
 		}

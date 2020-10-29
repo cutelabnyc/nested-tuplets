@@ -19,7 +19,8 @@ maxApi.addHandler("parse", (text) => {
 	} catch (e) {
 		const pe = new ParseError(e);
 		if (pe.token) {
-			maxApi.outlet(["parseerror", pe.line, pe.col, pe.token, pe.message]);
+			const maxSanitizedToken = pe.token === "," ? "##comma##" : pe.token;
+			maxApi.outlet(["parseerror", pe.line, pe.col, maxSanitizedToken, pe.message]);
 		} else {
 			maxApi.post(e.message);
 			maxApi.outlet("error");
