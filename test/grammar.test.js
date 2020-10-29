@@ -101,4 +101,19 @@ describe("Generating parse trees", () => {
 		expect(result[0]).to.have.property("structure").with.property("division").that.equals(3);
 		expect(result[1]).to.have.property("structure").with.property("division").that.equals(4);
 	});
+
+	it("parses a rhythm with a beat ratio", () => {
+		const input = `
+			[2, 2/3] {3}
+		`;
+
+		const parser = new RhythmParser();
+		const result = parser.parse(input);
+
+		expect(result).to.have.length(1);
+		const phrase = result[0];
+		expect(phrase).to.haveOwnProperty("dimension");
+		expect(phrase.dimension).to.have.property("length").that.equals(2);
+		expect(phrase.dimension).to.have.property("beatRatio").that.equals(2/3);
+	})
 });
