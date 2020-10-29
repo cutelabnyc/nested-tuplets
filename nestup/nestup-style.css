@@ -9,3 +9,7 @@ body {
 	height: 100%;
 	background-color: blanchedalmond;
 }
+
+.errortext {
+	text-decoration: underline dotted red;
+}

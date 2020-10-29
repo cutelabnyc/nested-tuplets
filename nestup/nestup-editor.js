@@ -12,9 +12,18 @@ const myCodeMirror = CodeMirror.fromTextArea(myTextArea, {
 	tabSize: 2
 });
 
+window.cm = myCodeMirror;
+
 window.max.bindInlet("text", (text) => {
 	if (myCodeMirror) {
 		myCodeMirror.setValue(text);
+	}
+});
+
+window.max.bindInlet("mark", (line, col, token, _message) => {
+	if (myCodeMirror) {
+		// Mark the token
+		myCodeMirror.markText({line, ch: col}, {line, ch: col + token.length}, { className: "errortext" });
 	}
 });
 
