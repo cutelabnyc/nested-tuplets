@@ -4,38 +4,36 @@
     "length": 1
   },
   "structure": {
-    "division": 5,
+    "division": 7,
     "subtuples": [
       {
         "extension": {
           "index": 1,
-          "length": 4
+          "length": 3
         },
         "structure": {
-          "division": 3,
-          "subtuples": [
-            {
-              "extension": {
-                "index": 1,
-                "length": 1
-              },
-              "structure": {
-                "division": 3,
-                "subtuples": [
-                  {
-                    "extension": {
-                      "index": 2,
-                      "length": 1
-                    },
-                    "structure": {
-                      "division": 7,
-                      "subtuples": []
-                    }
-                  }
-                ]
-              }
-            }
-          ]
+          "division": 5,
+          "subtuples": []
+        }
+      },
+      {
+        "extension": {
+          "index": 4,
+          "length": 2
+        },
+        "structure": {
+          "division": 5,
+          "subtuples": []
+        }
+      },
+      {
+        "extension": {
+          "index": 6,
+          "length": 1
+        },
+        "structure": {
+          "division": 2,
+          "subtuples": []
         }
       }
     ]
