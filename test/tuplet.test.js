@@ -10,12 +10,12 @@ describe("Tuplets", () => {
 
 		const phraseDescription = parseTree[0];
 		const tup = new Tuplet(phraseDescription.structure);
-		const times = tup.normalizedOnsetTimes();
+		const onsets = tup.normalizedOnsets();
 
-		expect(times).to.have.length(3);
-		expect(times[0]).to.equal(0);
-		expect(times[1]).to.be.within(0.33, 0.34);
-		expect(times[2]).to.be.within(0.66, 0.67);
+		expect(onsets).to.have.length(3);
+		expect(onsets[0].time).to.equal(0);
+		expect(onsets[1].time).to.be.within(0.33, 0.34);
+		expect(onsets[2].time).to.be.within(0.66, 0.67);
 	});
 
 	it("parses a nested tuple", () => {
@@ -26,13 +26,13 @@ describe("Tuplets", () => {
 
 		const phraseDescription = parseTree[0];
 		const tup = new Tuplet(phraseDescription.structure);
-		const times = tup.normalizedOnsetTimes();
+		const onsets = tup.normalizedOnsets();
 
-		expect(times).to.have.length(5);
-		expect(times[0]).to.equal(0);
-		expect(times[1]).to.be.within(0.33 / 3, 0.34 / 3);
-		expect(times[2]).to.be.within(0.66 / 3, 0.67 / 3);
-		expect(times[3]).to.be.within(0.33, 0.34);
-		expect(times[4]).to.be.within(0.66, 0.67);
+		expect(onsets).to.have.length(5);
+		expect(onsets[0].time).to.equal(0);
+		expect(onsets[1].time).to.be.within(0.33 / 3, 0.34 / 3);
+		expect(onsets[2].time).to.be.within(0.66 / 3, 0.67 / 3);
+		expect(onsets[3].time).to.be.within(0.33, 0.34);
+		expect(onsets[4].time).to.be.within(0.66, 0.67);
 	});
 });

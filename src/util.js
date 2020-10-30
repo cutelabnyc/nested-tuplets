@@ -1,4 +1,6 @@
-function normalizedOnsetTimes(phrases) {
+const Onset = require("./onset");
+
+function normalizedOnsets(phrases) {
 	// Collect the total number of beats
 	const totalBeats = phrases.reduce((prev, {length, beatRatio}) => prev + length * beatRatio, 0);
 
@@ -7,8 +9,11 @@ function normalizedOnsetTimes(phrases) {
 	let onsets = [];
 	phrases.forEach(p => {
 		const { length, beatRatio } = p;
-		const times = p.normalizedOnsetTimes();
-		const scaledOnsetTimes = times.map(t => (beatOffset + (length * beatRatio / totalBeats) * t));
+		const phraseOnsets = p.normalizedOnsets();
+		const scaledOnsetTimes = phraseOnsets.map(po => new Onset(
+			(beatOffset + (length * beatRatio / totalBeats) * po.time),
+			po.path)
+		);
 		beatOffset += (length * beatRatio) / totalBeats;
 		onsets = onsets.concat(scaledOnsetTimes);
 	});
@@ -17,5 +22,5 @@ function normalizedOnsetTimes(phrases) {
 }
 
 module.exports = {
-	normalizedOnsetTimes
+	normalizedOnsets
 };
