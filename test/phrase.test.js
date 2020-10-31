@@ -38,4 +38,20 @@ describe("Phrases", () => {
 		expect(onsets[2].time).to.equal(1 / 4);
 		expect(onsets[3].time).to.equal(2.5 / 4);
 	});
+
+	it("handles onset paths", () => {
+		const input = `{2 (2, 1) {2 (2, 1) {2}}}`;
+		const parseTree = new RhythmParser().parse(input);
+
+		expect(parseTree).to.be.an.instanceOf(Array).with.length(1);
+
+		const phrases = parseTree.map((p, idx) => new Phrase(p, idx + 1));
+		const onsets = normalizedOnsets(phrases);
+
+		expect(onsets).to.be.an.instanceOf(Array).with.length(4);
+		expect(onsets[0].path).to.equal("1");
+		expect(onsets[1].path).to.equal("11");
+		expect(onsets[2].path).to.equal("111");
+		expect(onsets[3].path).to.equal("111");
+	});
 });

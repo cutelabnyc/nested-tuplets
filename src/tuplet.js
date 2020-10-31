@@ -6,9 +6,9 @@ module.exports = class Tuplet {
 		this._division = tupletDescription.division;
 
 		this._subtuplets = tupletDescription.subtuplets.map(
-			({extension, structure}) => { return {
+			({extension, structure}, idx) => { return {
 				extension: new Interval(extension.index, extension.length),
-				tuplet: new Tuplet(structure)
+				tuplet: new Tuplet(structure, idx + 1)
 			}});
 
 		this._index = index;
@@ -44,7 +44,7 @@ module.exports = class Tuplet {
 			onsets.forEach(onset => {
 				out.push(new Onset(
 					onset.time * scale + offset,
-					(this._index !== undefined) ? `${this._index}onset.path` : undefined
+					(this._index !== undefined) ? `${this._index}${onset.path}` : undefined
 				));
 			});
 		});

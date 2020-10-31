@@ -2,20 +2,21 @@ const maxApi = require("max-api");
 const RhythmParser = require("./src/parser");
 const Phrase = require("./src/phrase");
 const ParseError = require("./src/parseError");
-const { normalizedOnsetTimes } = require("./src/util");
+const { normalizedOnsets } = require("./src/util");
 
 function process(text) {
 	const parser = new RhythmParser();
 	const results = parser.parse(text);
-	const phrases = results.map(r => new Phrase(r));
-	const times = normalizedOnsetTimes(phrases);
-	return times;
+	const phrases = results.map((r, idx) => new Phrase(r, idx + 1));
+	const onsets = normalizedOnsets(phrases);
+	return onsets;
 }
 
 maxApi.addHandler("parse", (text) => {
 	try {
-		const times = process(text);
-		maxApi.outlet(["times"].concat(times));
+		const onsets = process(text);
+		const onsetsAsList = onsets.reduce((p, onset) => p.concat([onset.time, onset.path]), []);
+		maxApi.outlet(["onsets"].concat(onsetsAsList));
 	} catch (e) {
 		const pe = new ParseError(e);
 		if (pe.token) {
