@@ -158,7 +158,7 @@
 					"patching_rect" : [ 224.0, 447.0, 151.0, 35.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 11.0, 256.5, 412.0, 22.0 ],
-					"text" : "times 0 0.333333 0.666667"
+					"text" : "times 0 0.2 0.266667 0.333333 0.4 0.6 0.8"
 				}
 
 			}
@@ -604,7 +604,7 @@
 					"patching_rect" : [ 506.0, 141.5, 318.0, 257.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 116.0, 1.0, 307.0, 159.0 ],
-					"rendermode" : 0,
+					"rendermode" : 1,
 					"url" : "file:///Users/samueltarakajian/cute/rhythm-parser/nestup/nestup-editor.html",
 					"varname" : "editor"
 				}
