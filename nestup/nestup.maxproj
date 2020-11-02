@@ -2,7 +2,7 @@
 	"name" : "nestup",
 	"version" : 1,
 	"creationdate" : 3684812322,
-	"modificationdate" : 3686897323,
+	"modificationdate" : 3687174971,
 	"viewrect" : [ 79.0, 151.0, 300.0, 500.0 ],
 	"autoorganize" : 0,
 	"hideprojectwindow" : 0,
@@ -14,6 +14,24 @@
 				"kind" : "patcher",
 				"local" : 1,
 				"toplevel" : 1
+			}
+
+		}
+,
+		"media" : 		{
+			"multimap-closed-off.svg" : 			{
+				"kind" : "vectorimagefile",
+				"local" : 1
+			}
+,
+			"multimap-open-off.svg" : 			{
+				"kind" : "vectorimagefile",
+				"local" : 1
+			}
+,
+			"multimap-unmap.svg" : 			{
+				"kind" : "vectorimagefile",
+				"local" : 1
 			}
 
 		}
@@ -39,12 +57,12 @@
 
 			}
 ,
-			"nestup-editor.js" : 			{
+			"nestup-visualizer.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}
 ,
-			"nestup-visualizer.js" : 			{
+			"nestup-editor.js" : 			{
 				"kind" : "javascript",
 				"local" : 1
 			}

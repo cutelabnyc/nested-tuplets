@@ -9,12 +9,14 @@ function process(text) {
 	const results = parser.parse(text);
 	const phrases = results.map((r, idx) => new Phrase(r, idx + 1));
 	const onsets = normalizedOnsets(phrases);
-	return onsets;
+	const beatLength = phrases.reduce((acc, ph) => acc + (ph.length * ph.beatRatio), 0);
+	return { beatLength, onsets };
 }
 
 maxApi.addHandler("parse", (text) => {
 	try {
-		const onsets = process(text);
+		const { beatLength, onsets } = process(text);
+		maxApi.outlet(["beatLength", beatLength]);
 		const onsetsAsList = onsets.reduce((p, onset) => p.concat([onset.time, onset.path]), []);
 		maxApi.outlet(["onsets"].concat(onsetsAsList));
 	} catch (e) {

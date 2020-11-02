@@ -2,9 +2,8 @@ function note(n) {
 	this._note = n;
 }
 
-function position(t, c) {
-	this.track = t;
-	this.clip = c;
+function slotid(id) {
+	this._slotid = id;
 }
 
 function length(l) {
@@ -21,16 +20,33 @@ function times() {
 		this._note = 48;
 	}
 
-	// Create a new clip and get its id
-	var api = new LiveAPI("live_set tracks " + this.track + " clip_slots " + this.clip);
-	if (api.get("has_clip") == 0) {
-		api.call("create_clip", this._length);
+	var clipApi;
+	if (this.clip && this.track) {
+		// Create a new clip and get its id
+		var api = new LiveAPI("live_set tracks " + this.track + " clip_slots " + this.clip);
+		if (api.get("has_clip") == 0) {
+			api.call("create_clip", this._length);
+		}
+
+		// API for the clip itself
+		var pathstr = "live_set tracks " + this.track + " clip_slots " + this.clip + " clip";
+		clipApi = new LiveAPI(pathstr);
+	} else if (this._slotid !== undefined) {
+		var api = new LiveAPI("id " + this._slotid);
+		if (api.get("has_clip") == 0) {
+			api.call("create_clip", this._length);
+		}
+
+		var clipid = api.get("clip");
+		clipApi = new LiveAPI(clipid);
 	}
 
-	// Fill it with midi notes
-	var pathstr = "live_set tracks " + this.track + " clip_slots " + this.clip + " clip";
-	var clipApi = new LiveAPI(pathstr);
-	clipApi.call("set_notes");
+	// Set the notes
+	clipApi.set("length", this._length);
+	clipApi.set("loop_start", 0);
+	clipApi.set("loop_end", this._length);
+	clipApi.call("select_all_notes");
+	clipApi.call("replace_selected_notes");
 	clipApi.call("notes", arguments.length);
 	for (var i = 0; i < arguments.length; i++) {
 		var time = arguments[i];

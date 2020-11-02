@@ -22,7 +22,7 @@ const lexer = moo.compile({
 // Beat ratio
 const dbr = 1;
 // Phrase dimension
-const dpd = { length: 1, beatRatio: dbr };
+const dpd = { length: 4, beatRatio: dbr };
 %}
 
 # Pass your lexer object using the @lexer option:

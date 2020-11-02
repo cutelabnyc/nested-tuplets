@@ -2,7 +2,11 @@ const myTextArea = document.getElementById("nestup-input");
 
 function sendTextToMax(text) {
 	if (window.max) {
-		window.max.outlet.apply(window.max, ["text", text]);
+		if (text) {
+			window.max.outlet.apply(window.max, ["text", text]);
+		} else {
+			window.max.outlet("text");
+		}
 	}
 }
 
@@ -49,7 +53,11 @@ function clearErrorBox() {
 
 myCodeMirror.on("change", () => {
 	const text = myCodeMirror.getValue();
-	if (text) sendTextToMax(text);
+	if (text) {
+		sendTextToMax(text);
+	} else {
+		sendTextToMax(null);
+	}
 
 	const marks = myCodeMirror.getAllMarks();
 	if (marks.length === 0) {
