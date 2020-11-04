@@ -25,14 +25,10 @@ body {
 	background-color: #CCCCCC;
 }
 
-.CodeMirror-linenumber {
-
-}
-
 .errorBox {
 	position: absolute;
 	bottom: 0;
-	margin-left: 30px;
+	margin-left: 0px;
 	width: 100%;
 	background-color: lightpink;
 	font-size: 13px;
