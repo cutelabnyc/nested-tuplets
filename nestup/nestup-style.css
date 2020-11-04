@@ -18,6 +18,15 @@ body {
 .CodeMirror {
 	width: 100%;
 	height: auto;
+	background-color: #A5A5A5;
+}
+
+.CodeMirror-gutter {
+	background-color: #CCCCCC;
+}
+
+.CodeMirror-linenumber {
+
 }
 
 .errorBox {

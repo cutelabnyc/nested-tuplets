@@ -6,11 +6,28 @@ var onsets = [];
 
 var colors = {};
 
+var hc_colors = [
+	[230, 25, 75],
+	[60, 180, 75],
+	[255, 225, 25],
+	[0, 130, 200],
+	[245, 130, 48],
+	[145, 30, 180],
+	[70, 220, 220],
+	[240, 50, 230],
+	[210, 245, 60],
+	[0, 128, 128],
+	[170, 110, 40],
+	[128, 0, 0],
+	[128, 128, 0],
+	[0, 0, 128]
+];
+
+var color_offset = Math.floor(Math.random() * hc_colors.length);
+
 function randomColor() {
-	var color = [];
-	for (var i = 0; i < 3; i++) {
-		color.push(Math.random());
-	}
+	var color = hc_colors[color_offset].slice().map(function (c) { return c / 255; });
+	color_offset = (color_offset + 1) % hc_colors.length;
 	color.push(1);
 	return color;
 }
@@ -48,10 +65,12 @@ function paint() {
 		mgraphics.set_source_rgba(color[0], color[1], color[2], color[3]);
 		mgraphics.rectangle(nt1 * aspect, 1, (nt2 - nt1) * aspect, 2);
 		mgraphics.fill();
-		mgraphics.rectangle(nt1 * aspect, 1, (nt2 - nt1) * aspect, 2);
-		mgraphics.set_source_rgba(1, 1, 1, 1);
-		mgraphics.stroke();
-		// mgraphics.set_source_rgba(1, 1, 1, 1);
+		if (time !== 0) {
+			mgraphics.set_source_rgba(1, 1, 1, 1);
+			mgraphics.move_to(nt1 * aspect, 1);
+			mgraphics.line_to(nt1 * aspect, -1);
+			mgraphics.stroke();
+		}
 	}
 }
 
