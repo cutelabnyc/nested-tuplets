@@ -1,9 +1,12 @@
 {
-  "name": "nestup",
-  "version": "0.1.0",
+  "name": "@cutelab/nestup",
+  "version": "0.1.1",
   "description": "Parse a special hierarchical tuplet syntax, get a bunch of midi notes",
   "main": "index.js",
-  "author": "Sam Tarakajian",
+  "contributors": [
+    "Sam Tarakajian <starakajian@gmail.com>",
+    "Alex Van Gils <alexvangils@gmail.com>"
+  ],
   "license": "MIT",
   "private": false,
   "dependencies": {
