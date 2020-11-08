@@ -1,6 +1,6 @@
 {
   "name": "@cutelab/nestup",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Parse a special hierarchical tuplet syntax, get a bunch of midi notes",
   "main": "index.js",
   "contributors": [
@@ -24,5 +24,18 @@
     "build": "mkdir -p src/build && nearleyc grammar/grammar.ne --out ./src/build/grammar.js",
     "start": "node cli.js",
     "test": "mocha"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cutelabnyc/nested-tuplets.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/cutelabnyc/nested-tuplets/issues"
+  },
+  "homepage": "https://github.com/cutelabnyc/nested-tuplets#readme"
 }
