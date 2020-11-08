@@ -16,7 +16,7 @@ to get the repo all set up.
 
 The NESTUP language is simple in that it ignores many of the conventions used to describe rhythmic subdivision and tuplets in "western" music notation. That is, NESTUP doesn't care if you are in compound or simple meter, or whether the tuplet is described in sixteenth notes or eighth notes. A musician writing in NESTUP simply describes the numbers of events (musical notes or rhythmic attacks) that should occur in a given period of time.
 
-![5 against 4 eighth notes, followed by two quarter notes](ex-5-4.png "Figure 1")
+![5 against 4 eighth notes, followed by two quarter notes](img/ex-5-4.png "Figure 1")
 
 *Figure 1*
 
@@ -43,10 +43,10 @@ How are these two examples equivalent? Well, let's look at how NESTUP works.
 
 1. You specify a number of events using curly braces `{}`, so in our first example, we start by describing four beats with `{4}`.
 
-2. To describe a further level of rhythmic subdivision, you use parentheses `()`, wherein you identify: 
-- where, within the previously described events, this further level of rhythmic subdivision is to take place, and 
+2. To describe a further level of rhythmic subdivision, you use parentheses `()`, wherein you identify:
+- where, within the previously described events, this further level of rhythmic subdivision is to take place, and
 - the duration of the new rhythmic subdivision, described in terms of number of events in the preceding rhythmic level over which the new rhythmic subdivision should extend.
 
 3. So in the initial example, `(1, 2)` describes that from the first event of the four events described by `{4}`, and lasting for the length of two of those events, there should be some number of events. How many events? The first example specifies `{5}`.
 
-This gives us the rhythm from figure 1: 
+This gives us the rhythm from figure 1:
