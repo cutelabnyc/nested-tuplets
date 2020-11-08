@@ -1,7 +1,6 @@
 require("mocha");
 const { expect, assert } = require("chai");
-const RhythmParser = require("../src/parser");
-const ParseError = require("../src/parseError");
+const { RhythmParser, ParseError } = require("../index");
 
 describe("Parse errors", () => {
 	it("identifies obvious line errors", () => {

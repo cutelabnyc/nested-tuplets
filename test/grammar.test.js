@@ -1,6 +1,6 @@
 require("mocha");
 const { expect } = require("chai");
-const RhythmParser = require("../src/parser");
+const { RhythmParser } = require("../index");
 
 describe("Bare minimum", () => {
 	it("loads the grammar", () => {

@@ -1,7 +1,6 @@
 require("mocha");
 const { expect } = require("chai");
-const Tuplet = require("../src/tuplet");
-const RhythmParser = require("../src/parser");
+const { RhythmParser, Tuplet } = require("../index");
 
 describe("Tuplets", () => {
 	it("parses a basic tuplet", () => {

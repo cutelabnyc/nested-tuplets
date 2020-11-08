@@ -1,8 +1,6 @@
 require("mocha");
 const { expect } = require("chai");
-const Phrase = require("../src/phrase");
-const RhythmParser = require("../src/parser");
-const { normalizedOnsets } = require("../src/util");
+const { Phrase, RhythmParser, normalizedOnsets } = require("../index");
 
 describe("Phrases", () => {
 	it("parses a phrase with a beat ratio", () => {
