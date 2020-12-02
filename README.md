@@ -63,13 +63,10 @@ If we wrote this rhythm using the second NESTUP code example, we've simply descr
 
 ### The Simplest NESTUP Expression
 
-<<<<<<< Updated upstream
 This gives us the rhythm from figure 1:
-=======
 ```
 {3}
 ```
 ```
 [10,1]
 ```
->>>>>>> Stashed changes
