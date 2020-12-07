@@ -1,8 +1,7 @@
 const fs = require("fs");
 const path = require("path");
-const RhythmParser = require("./src/parser");
-const NestedTuplet = require("./src/nestedTuplet");
-const writeTimesAsMidi = require("./src/trackWriter");
+const { Phrase, RhythmParser, normalizedOnsets } = require("./index");
+const writeOnsetsAsMidi = require("./src/trackWriter");
 const { program } = require('commander');
 program.version('0.1.0');
 
@@ -13,10 +12,10 @@ program
 
 function process(text, outputFilePath) {
 	const parser = new RhythmParser();
-	const results = parser.parse(text);
-	const nt = new NestedTuplet(results);
-	const times = nt.normalizedOnsetTimes();
-	writeTimesAsMidi(times, outputFilePath);
+	const parseTree = parser.parse(text);
+	const phrases = parseTree.map(p => new Phrase(p));
+	const onsets = normalizedOnsets(phrases);
+	writeOnsetsAsMidi(onsets, outputFilePath);
 }
 
 function makeOutName(container, prefix) {
