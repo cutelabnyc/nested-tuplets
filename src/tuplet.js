@@ -1,5 +1,6 @@
 const Interval = require("./interval");
 const Onset = require("./onset");
+const Fraction = require("fraction.js");
 
 module.exports = class Tuplet {
 	constructor(tupletDescription, index) {
@@ -30,7 +31,7 @@ module.exports = class Tuplet {
 			let intersector = this._subtuplets.findIndex(({ extension }) => extension.intersects(i + 1));
 			if (intersector === -1)
 				out.push(new Onset(
-					i / this.division,
+					new Fraction(i, this.division),
 					`${this._index}`
 				));
 		}
@@ -38,12 +39,12 @@ module.exports = class Tuplet {
 		// Add onsets from all the other subtuplets
 		this._subtuplets.forEach(({extension, tuplet: st}) => {
 			const {index, length} = extension;
-			let offset = (index - 1) / this.division;
-			let scale = length / this.division;
+			let offset = new Fraction((index - 1), this.division);
+			let scale = new Fraction(length, this.division);
 			let onsets = st.normalizedOnsets();
 			onsets.forEach(onset => {
 				out.push(new Onset(
-					onset.time * scale + offset,
+					onset.time.mul(scale).add(offset),
 					(this._index !== undefined) ? `${this._index}${onset.path}` : undefined
 				));
 			});
@@ -51,7 +52,7 @@ module.exports = class Tuplet {
 
 		// sort
 		out = out.sort((oa, ob) => {
-			return oa.time - ob.time
+			return oa.time.compare(ob.time);
 		});
 
 		// Filter duplicates
@@ -59,7 +60,7 @@ module.exports = class Tuplet {
 		while (i < out.length) {
 			if (i >= (out.length - 1))
 				break;
-			if (out[i] === out[i + 1]) {
+			if (out[i].time.equals(out[i + 1].time)) {
 				out.splice(i, 1);
 			} else {
 				i++;

@@ -1,6 +1,7 @@
 require("mocha");
 const { expect } = require("chai");
 const { Phrase, RhythmParser, normalizedOnsets } = require("../index");
+const Fraction = require("fraction.js");
 
 describe("Phrases", () => {
 	it("parses a phrase with a beat ratio", () => {
@@ -12,13 +13,14 @@ describe("Phrases", () => {
 		const phrase = new Phrase(parseTree[0]);
 
 		expect(phrase).to.have.property("length").that.equals(2);
-		expect(phrase).to.have.property("beatRatio").that.equals(2/3);
+		expect(phrase).to.have.property("beatRatio");
+		expect(phrase.beatRatio.equals(new Fraction(2, 3))).to.be.true;
 
 		const onsets = phrase.normalizedOnsets();
 		expect(onsets).to.have.length(3);
-		expect(onsets[0].time).to.equal(0);
-		expect(onsets[1].time).to.equal(1/3);
-		expect(onsets[2].time).to.equal(2/3);
+		expect(onsets[0].time.equals(new Fraction(0))).to.be.true;
+		expect(onsets[1].time.equals(new Fraction(1, 3))).to.be.true;
+		expect(onsets[2].time.equals(new Fraction(2, 3))).to.be.true;
 	});
 
 	it("normalizes phrases by beat ratio", () => {
@@ -31,10 +33,10 @@ describe("Phrases", () => {
 		const onsets = normalizedOnsets(phrases);
 
 		expect(onsets).to.be.an.instanceOf(Array).with.length(4);
-		expect(onsets[0].time).to.equal(0);
-		expect(onsets[1].time).to.equal(0.5 / 4);
-		expect(onsets[2].time).to.equal(1 / 4);
-		expect(onsets[3].time).to.equal(2.5 / 4);
+		expect(onsets[0].time.equals(new Fraction(0))).to.be.true;
+		expect(onsets[1].time.equals(new Fraction(1, 8))).to.be.true;
+		expect(onsets[2].time.equals(new Fraction(1, 4))).to.be.true;
+		expect(onsets[3].time.equals(new Fraction(5, 8))).to.be.true;
 	});
 
 	it("handles onset paths", () => {
