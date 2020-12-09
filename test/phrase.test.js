@@ -30,7 +30,7 @@ describe("Phrases", () => {
 		expect(parseTree).to.be.an.instanceOf(Array).with.length(2);
 
 		const nestup = new Nestup(parseTree);
-		const onsets = nestup.normalizedOnsets();
+		const onsets = nestup._normalizedOnsets();
 
 		expect(onsets).to.be.an.instanceOf(Array).with.length(4);
 		expect(onsets[0].time.equals(new Fraction(0))).to.be.true;
@@ -46,7 +46,7 @@ describe("Phrases", () => {
 		expect(parseTree).to.be.an.instanceOf(Array).with.length(1);
 
 		const nestup = new Nestup(parseTree);
-		const onsets = nestup.normalizedOnsets();
+		const onsets = nestup._normalizedOnsets();
 
 		expect(onsets).to.be.an.instanceOf(Array).with.length(4);
 		expect(onsets[0].path).to.equal("1");

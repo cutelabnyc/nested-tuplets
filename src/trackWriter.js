@@ -3,7 +3,7 @@ const midiWriter = require("midi-writer-js");
 module.exports = function writeOnsetsAsMidi(nestup, pitch, ticks, outfile) {
 	// Assume 4 beats to one measure
 	const track = new midiWriter.Track();
-	const midiLikeEvents = nestup.asOnOffEvents(ticks);
+	const midiLikeEvents = nestup.onOffEvents(ticks);
 	let lastEvent = null;
 
 	let tickCounter = 0;
