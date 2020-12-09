@@ -17,10 +17,15 @@ const lexer = moo.compile({
 });
 %}
 
+# Requires
+@{%
+const Fraction = require("fraction.js");
+%}
+
 # Default structures
 @{%
 // Beat ratio
-const dbr = 1;
+const dbr = new Fraction(1);
 // Phrase dimension
 const dpd = { length: 4, beatRatio: dbr };
 %}
@@ -39,8 +44,8 @@ phrase ->
 # A phrase dimention is a beat length with an optional beat ratio
 phrase_dimension ->
 	  %ls _:? number _:? %rs {% d => { return { length: d[2], beatRatio: dbr }} %}
-	| %ls _:? number _:? %comma _:? number _:? %rs {% d => { return { length: d[2], beatRatio: d[6] }} %}
-	| %ls _:? number _:? %comma _:? number _:? %slash _:? number _:? %rs {% d => { return { length: d[2], beatRatio: d[6] / d[10] }} %}
+	| %ls _:? number _:? %comma _:? number _:? %rs {% d => { return { length: d[2], beatRatio: new Fraction(d[6]) }} %}
+	| %ls _:? number _:? %comma _:? number _:? %slash _:? number _:? %rs {% d => { return { length: d[2], beatRatio: new Fraction(d[6], d[10]) }} %}
 
 # Structure is just a number of subdivisions followed by a list of tuplets
 structure -> %lb _:? number tuplet:* _:? %rb {% d => {return { division: d[2], subtuplets: d[3] }} %}

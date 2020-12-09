@@ -1,6 +1,7 @@
 require("mocha");
 const { expect } = require("chai");
 const { RhythmParser } = require("../index");
+const Fraction = require("fraction.js");
 
 describe("Bare minimum", () => {
 	it("loads the grammar", () => {
@@ -36,7 +37,7 @@ describe("Generating parse trees", () => {
 		const dimension = phrase.dimension;
 
 		expect(dimension).to.have.property("length").that.is.a("number");
-		expect(dimension).to.have.property("beatRatio").that.is.a("number");
+		expect(dimension).to.have.property("beatRatio").that.is.an.instanceOf(Fraction);
 
 		const structure = phrase.structure;
 
@@ -86,7 +87,8 @@ describe("Generating parse trees", () => {
 		const phrase = result[0];
 		expect(phrase).to.haveOwnProperty("dimension");
 		expect(phrase.dimension).to.have.property("length").that.equals(4);
-		expect(phrase.dimension).to.have.property("beatRatio").that.equals(2);
+		expect(phrase.dimension).to.have.property("beatRatio").that.is.an.instanceOf(Fraction);
+		expect(phrase.dimension.beatRatio.equals(2)).to.be.true;
 	});
 
 	it("parses a rhythm with multiple phrases", () => {
@@ -114,6 +116,7 @@ describe("Generating parse trees", () => {
 		const phrase = result[0];
 		expect(phrase).to.haveOwnProperty("dimension");
 		expect(phrase.dimension).to.have.property("length").that.equals(2);
-		expect(phrase.dimension).to.have.property("beatRatio").that.equals(2/3);
+		expect(phrase.dimension).to.have.property("beatRatio").that.is.an.instanceOf(Fraction);
+		expect(phrase.dimension.beatRatio.equals(new Fraction(2, 3))).to.be.true;
 	})
 });

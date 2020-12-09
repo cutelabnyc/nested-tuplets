@@ -20,8 +20,11 @@ const lexer = moo.compile({
 });
 
 
+const Fraction = require("fraction.js");
+
+
 // Beat ratio
-const dbr = 1;
+const dbr = new Fraction(1);
 // Phrase dimension
 const dpd = { length: 4, beatRatio: dbr };
 var grammar = {
@@ -53,7 +56,7 @@ var grammar = {
     {"name": "phrase_dimension$ebnf$5", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "phrase_dimension$ebnf$6", "symbols": ["_"], "postprocess": id},
     {"name": "phrase_dimension$ebnf$6", "symbols": [], "postprocess": function(d) {return null;}},
-    {"name": "phrase_dimension", "symbols": [(lexer.has("ls") ? {type: "ls"} : ls), "phrase_dimension$ebnf$3", "number", "phrase_dimension$ebnf$4", (lexer.has("comma") ? {type: "comma"} : comma), "phrase_dimension$ebnf$5", "number", "phrase_dimension$ebnf$6", (lexer.has("rs") ? {type: "rs"} : rs)], "postprocess": d => { return { length: d[2], beatRatio: d[6] }}},
+    {"name": "phrase_dimension", "symbols": [(lexer.has("ls") ? {type: "ls"} : ls), "phrase_dimension$ebnf$3", "number", "phrase_dimension$ebnf$4", (lexer.has("comma") ? {type: "comma"} : comma), "phrase_dimension$ebnf$5", "number", "phrase_dimension$ebnf$6", (lexer.has("rs") ? {type: "rs"} : rs)], "postprocess": d => { return { length: d[2], beatRatio: new Fraction(d[6]) }}},
     {"name": "phrase_dimension$ebnf$7", "symbols": ["_"], "postprocess": id},
     {"name": "phrase_dimension$ebnf$7", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "phrase_dimension$ebnf$8", "symbols": ["_"], "postprocess": id},
@@ -66,7 +69,7 @@ var grammar = {
     {"name": "phrase_dimension$ebnf$11", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "phrase_dimension$ebnf$12", "symbols": ["_"], "postprocess": id},
     {"name": "phrase_dimension$ebnf$12", "symbols": [], "postprocess": function(d) {return null;}},
-    {"name": "phrase_dimension", "symbols": [(lexer.has("ls") ? {type: "ls"} : ls), "phrase_dimension$ebnf$7", "number", "phrase_dimension$ebnf$8", (lexer.has("comma") ? {type: "comma"} : comma), "phrase_dimension$ebnf$9", "number", "phrase_dimension$ebnf$10", (lexer.has("slash") ? {type: "slash"} : slash), "phrase_dimension$ebnf$11", "number", "phrase_dimension$ebnf$12", (lexer.has("rs") ? {type: "rs"} : rs)], "postprocess": d => { return { length: d[2], beatRatio: d[6] / d[10] }}},
+    {"name": "phrase_dimension", "symbols": [(lexer.has("ls") ? {type: "ls"} : ls), "phrase_dimension$ebnf$7", "number", "phrase_dimension$ebnf$8", (lexer.has("comma") ? {type: "comma"} : comma), "phrase_dimension$ebnf$9", "number", "phrase_dimension$ebnf$10", (lexer.has("slash") ? {type: "slash"} : slash), "phrase_dimension$ebnf$11", "number", "phrase_dimension$ebnf$12", (lexer.has("rs") ? {type: "rs"} : rs)], "postprocess": d => { return { length: d[2], beatRatio: new Fraction(d[6], d[10]) }}},
     {"name": "structure$ebnf$1", "symbols": ["_"], "postprocess": id},
     {"name": "structure$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "structure$ebnf$2", "symbols": []},
