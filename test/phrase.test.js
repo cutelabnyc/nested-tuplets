@@ -1,6 +1,6 @@
 require("mocha");
 const { expect } = require("chai");
-const { Phrase, RhythmParser, normalizedOnsets } = require("../index");
+const { Phrase, RhythmParser, Nestup } = require("../index");
 const Fraction = require("fraction.js");
 
 describe("Phrases", () => {
@@ -29,8 +29,8 @@ describe("Phrases", () => {
 
 		expect(parseTree).to.be.an.instanceOf(Array).with.length(2);
 
-		const phrases = parseTree.map(p => new Phrase(p));
-		const onsets = normalizedOnsets(phrases);
+		const nestup = new Nestup(parseTree);
+		const onsets = nestup.normalizedOnsets();
 
 		expect(onsets).to.be.an.instanceOf(Array).with.length(4);
 		expect(onsets[0].time.equals(new Fraction(0))).to.be.true;
@@ -45,8 +45,8 @@ describe("Phrases", () => {
 
 		expect(parseTree).to.be.an.instanceOf(Array).with.length(1);
 
-		const phrases = parseTree.map((p, idx) => new Phrase(p, idx + 1));
-		const onsets = normalizedOnsets(phrases);
+		const nestup = new Nestup(parseTree);
+		const onsets = nestup.normalizedOnsets();
 
 		expect(onsets).to.be.an.instanceOf(Array).with.length(4);
 		expect(onsets[0].path).to.equal("1");

@@ -1,6 +1,6 @@
 require("mocha");
 const { expect } = require("chai");
-const { RhythmParser, Tuplet } = require("../index");
+const { RhythmParser, Tuplet, Onset } = require("../index");
 const Fraction = require("fraction.js");
 
 describe("Tuplets", () => {
@@ -34,5 +34,27 @@ describe("Tuplets", () => {
 		expect(onsets[2].time.equals(new Fraction(2, 9))).to.be.true;
 		expect(onsets[3].time.equals(new Fraction(1, 3))).to.be.true;
 		expect(onsets[4].time.equals(new Fraction(2, 3))).to.be.true;
+	});
+
+	it("handles rests", () => {
+		const input = `[4] {0}`;
+		const parseTree = new RhythmParser().parse(input);
+
+		const phraseDescription = parseTree[0];
+		const tup = new Tuplet(phraseDescription.structure);
+		const onsets = tup.normalizedOnsets();
+
+		expect(onsets[0].type).to.equal(Onset.type.OFF);
+	});
+
+	it("handles subtuples with rests", () => {
+		const input = `[4] {3 (2, 1) {0} }`;
+		const parseTree = new RhythmParser().parse(input);
+
+		const phraseDescription = parseTree[0];
+		const tup = new Tuplet(phraseDescription.structure);
+		const onsets = tup.normalizedOnsets();
+
+		expect(onsets[1].type).to.equal(Onset.type.OFF);
 	});
 });

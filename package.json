@@ -13,6 +13,7 @@
     "chai": "^4.2.0",
     "commander": "^6.1.0",
     "fraction.js": "^4.0.12",
+    "memoizee": "^0.4.14",
     "midi-writer-js": "^1.7.4",
     "mocha": "^8.2.0",
     "moo": "^0.5.1",

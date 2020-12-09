@@ -26,12 +26,24 @@ module.exports = class Tuplet {
 	normalizedOnsets() {
 		let out = [];
 
+		// Special case: if the division is one, we encode a rest.
+		if (this._division === 0) {
+			out.push(new Onset(
+				new Fraction(0),
+				Onset.type.OFF,
+				(this._index !== undefined) ? `${this._index}` : undefined
+			));
+
+			return out;
+		}
+
 		// Add an onset for each position that doesn't intersect a subtuplet
 		for (let i = 0; i < this._division; i++) {
 			let intersector = this._subtuplets.findIndex(({ extension }) => extension.intersects(i + 1));
 			if (intersector === -1)
 				out.push(new Onset(
 					new Fraction(i, this.division),
+					Onset.type.ON,
 					`${this._index}`
 				));
 		}
@@ -45,6 +57,7 @@ module.exports = class Tuplet {
 			onsets.forEach(onset => {
 				out.push(new Onset(
 					onset.time.mul(scale).add(offset),
+					onset.type,
 					(this._index !== undefined) ? `${this._index}${onset.path}` : undefined
 				));
 			});
