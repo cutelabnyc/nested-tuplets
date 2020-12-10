@@ -24,7 +24,8 @@
     "postinstall": "yarn run build",
     "build": "mkdir -p src/build && nearleyc grammar/grammar.ne --out ./src/build/grammar.js",
     "start": "node cli.js",
-    "test": "mocha"
+    "test": "mocha",
+    "test-grammar": "mocha -g Grammar"
   },
   "directories": {
     "test": "test"

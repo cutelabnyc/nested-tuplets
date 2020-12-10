@@ -3,13 +3,13 @@ const { expect } = require("chai");
 const { RhythmParser } = require("../index");
 const Fraction = require("fraction.js");
 
-describe("Bare minimum", () => {
+describe("Grammar: Bare minimum", () => {
 	it("loads the grammar", () => {
 		expect(RhythmParser).not.to.be.undefined;
 	});
 });
 
-describe("Generating parse trees", () => {
+describe("Grammar: Generating parse trees", () => {
 	it("parses an empty string", () => {
 		const input = "";
 		const parser = new RhythmParser();
@@ -29,22 +29,18 @@ describe("Generating parse trees", () => {
 		expect(result).to.be.an.instanceOf(Array);
 		expect(result).to.have.length(1);
 
-		const phrase = result[0];
+		const container = result[0];
 
-		expect(phrase).to.haveOwnProperty("dimension");
-		expect(phrase).to.haveOwnProperty("structure");
+		expect(container).to.haveOwnProperty("dimension");
+		expect(container).to.haveOwnProperty("subdivisions");
+		expect(container.dimension).to.equal(undefined);
 
-		const dimension = phrase.dimension;
+		const subdivisions = container.subdivisions;
 
-		expect(dimension).to.have.property("length").that.is.a("number");
-		expect(dimension).to.have.property("beatRatio").that.is.an.instanceOf(Fraction);
-
-		const structure = phrase.structure;
-
-		expect(structure).to.have.property("division").that.is.a("number");
-		expect(structure).to.have.property("subtuplets").that.is.an.instanceOf(Array);
-		expect(structure.division).to.equal(3);
-		expect(structure.subtuplets).to.have.length(0);
+		expect(subdivisions).to.have.property("division").that.is.a("number");
+		expect(subdivisions).to.have.property("ranges").that.is.an.instanceOf(Array);
+		expect(subdivisions.division).to.equal(3);
+		expect(subdivisions.ranges).to.have.length(0);
 	});
 
 	it("parses a nested rhythm", () => {
@@ -54,29 +50,30 @@ describe("Generating parse trees", () => {
 		const parser = new RhythmParser();
 		const result = parser.parse(input);
 
-		const phrase = result[0];
+		const container = result[0];
 
-		expect(phrase).to.haveOwnProperty("structure");
+		expect(container).to.haveOwnProperty("subdivisions");
 
-		const structure = phrase.structure;
+		const subdivisions = container.subdivisions;
 
-		expect(structure).to.have.property("division").that.equals(3);
-		expect(structure).to.have.property("subtuplets").that.is.an.instanceOf(Array).that.has.length(1);
+		expect(subdivisions).to.have.property("division").that.equals(3);
+		expect(subdivisions).to.have.property("ranges").that.is.an.instanceOf(Array).that.has.length(1);
 
-		const subtuplet = structure.subtuplets[0];
+		const rangedContainer = subdivisions.ranges[0];
 
-		expect(subtuplet).to.have.property("extension").that.is.a("object");
-		expect(subtuplet).to.have.property("structure").that.is.a("object");
+		expect(rangedContainer).to.have.property("range").that.is.a("object");
+		expect(rangedContainer).to.have.property("container").that.is.a("object");
 
-		const extension = subtuplet.extension;
-		const substructure = subtuplet.structure;
+		const range = rangedContainer.range;
+		const subcontainer = rangedContainer.container;
 
-		expect(extension).to.have.property("index").that.equals(1);
-		expect(extension).to.have.property("length").that.equals(2);
-		expect(substructure).to.have.property("division").that.equals(3);
+		expect(range).to.have.property("index").that.equals(1);
+		expect(range).to.have.property("length").that.equals(2);
+		expect(subcontainer).to.have.property("subdivisions").that.is.a("object");
+		expect(subcontainer.subdivisions.division).to.equal(3);
 	});
 
-	it("parses a rhythm with phrase dimensions", () => {
+	it("parses a rhythm with container dimensions", () => {
 		const input = `
 			[4, 2] {3}
 		`;
@@ -84,14 +81,14 @@ describe("Generating parse trees", () => {
 		const parser = new RhythmParser();
 		const result = parser.parse(input);
 
-		const phrase = result[0];
-		expect(phrase).to.haveOwnProperty("dimension");
-		expect(phrase.dimension).to.have.property("length").that.equals(4);
-		expect(phrase.dimension).to.have.property("beatRatio").that.is.an.instanceOf(Fraction);
-		expect(phrase.dimension.beatRatio.equals(2)).to.be.true;
+		const container = result[0];
+		expect(container).to.haveOwnProperty("dimension");
+		expect(container.dimension).to.have.property("proportionality").that.equals(4);
+		expect(container.dimension).to.have.property("scale").that.is.an.instanceOf(Fraction);
+		expect(container.dimension.scale.equals(2)).to.be.true;
 	});
 
-	it("parses a rhythm with multiple phrases", () => {
+	it("parses a rhythm with multiple containers", () => {
 		const input = `
 			{3} {4}
 		`;
@@ -100,11 +97,11 @@ describe("Generating parse trees", () => {
 		const result = parser.parse(input);
 
 		expect(result).to.have.length(2);
-		expect(result[0]).to.have.property("structure").with.property("division").that.equals(3);
-		expect(result[1]).to.have.property("structure").with.property("division").that.equals(4);
+		expect(result[0]).to.have.property("subdivisions").with.property("division").that.equals(3);
+		expect(result[1]).to.have.property("subdivisions").with.property("division").that.equals(4);
 	});
 
-	it("parses a rhythm with a beat ratio", () => {
+	it("parses a rhythm with a rational scale", () => {
 		const input = `
 			[2, 2/3] {3}
 		`;
@@ -113,10 +110,10 @@ describe("Generating parse trees", () => {
 		const result = parser.parse(input);
 
 		expect(result).to.have.length(1);
-		const phrase = result[0];
-		expect(phrase).to.haveOwnProperty("dimension");
-		expect(phrase.dimension).to.have.property("length").that.equals(2);
-		expect(phrase.dimension).to.have.property("beatRatio").that.is.an.instanceOf(Fraction);
-		expect(phrase.dimension.beatRatio.equals(new Fraction(2, 3))).to.be.true;
+		const container = result[0];
+		expect(container).to.haveOwnProperty("dimension");
+		expect(container.dimension).to.have.property("proportionality").that.equals(2);
+		expect(container.dimension).to.have.property("scale").that.is.an.instanceOf(Fraction);
+		expect(container.dimension.scale.equals(new Fraction(2, 3))).to.be.true;
 	})
 });
