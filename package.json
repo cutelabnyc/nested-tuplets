@@ -20,7 +20,7 @@
     "nearley": "^2.19.6"
   },
   "scripts": {
-    "pretest": "yarn run build",
+
     "postinstall": "yarn run build",
     "build": "mkdir -p src/build && nearleyc grammar/grammar.ne --out ./src/build/grammar.js",
     "start": "node cli.js",

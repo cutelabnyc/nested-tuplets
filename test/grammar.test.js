@@ -1,6 +1,6 @@
 require("mocha");
 const { expect } = require("chai");
-const { RhythmParser } = require("../index");
+const { RhythmParser, ParseError } = require("../index");
 const Fraction = require("fraction.js");
 
 describe("Grammar: Bare minimum", () => {
@@ -38,9 +38,7 @@ describe("Grammar: Generating parse trees", () => {
 		const subdivisions = container.subdivisions;
 
 		expect(subdivisions).to.have.property("division").that.is.a("number");
-		expect(subdivisions).to.have.property("ranges").that.is.an.instanceOf(Array);
-		expect(subdivisions.division).to.equal(3);
-		expect(subdivisions.ranges).to.have.length(0);
+		expect(subdivisions).to.have.property("ranges").that.is.null;
 	});
 
 	it("parses a nested rhythm", () => {
@@ -73,6 +71,25 @@ describe("Grammar: Generating parse trees", () => {
 		expect(subcontainer.subdivisions.division).to.equal(3);
 	});
 
+	it("handles multiple ranged containers", () => {
+		const input = `
+			{2
+				(1) {3}
+				(2) {4}
+			}
+		`;
+
+		const parser = new RhythmParser();
+		const result = parser.parse(input);
+
+		const container = result[0];
+		expect(container).to.haveOwnProperty("subdivisions");
+		expect(container.subdivisions).to.have.property("division").that.equals(2);
+		expect(container.subdivisions).to.haveOwnProperty("ranges").with.length(2);
+		expect(container.subdivisions.ranges[0].container.subdivisions.division).to.equal(3);
+		expect(container.subdivisions.ranges[1].container.subdivisions.division).to.equal(4);
+	});
+
 	it("parses a rhythm with container dimensions", () => {
 		const input = `
 			[4, 2] {3}
@@ -86,11 +103,13 @@ describe("Grammar: Generating parse trees", () => {
 		expect(container.dimension).to.have.property("proportionality").that.equals(4);
 		expect(container.dimension).to.have.property("scale").that.is.an.instanceOf(Fraction);
 		expect(container.dimension.scale.equals(2)).to.be.true;
+		expect(container).to.haveOwnProperty("subdivisions");
+		expect(container.subdivisions).to.have.property("division").that.equals(3);
 	});
 
 	it("parses a rhythm with multiple containers", () => {
 		const input = `
-			{3} {4}
+			[]{3} []{4}
 		`;
 
 		const parser = new RhythmParser();
@@ -115,5 +134,78 @@ describe("Grammar: Generating parse trees", () => {
 		expect(container.dimension).to.have.property("proportionality").that.equals(2);
 		expect(container.dimension).to.have.property("scale").that.is.an.instanceOf(Fraction);
 		expect(container.dimension.scale.equals(new Fraction(2, 3))).to.be.true;
-	})
+	});
+
+	it("handles subcontainers", () => {
+		const input = `[[1] [1]]`;
+
+		const parser = new RhythmParser();
+		const result = parser.parse(input);
+
+		expect(result).to.have.length(1);
+		const container = result[0];
+		expect(container).to.haveOwnProperty("contents").that.is.an.instanceOf(Array).with.length(2);
+	});
+
+	it("handles a container with additive proportionality", () => {
+		const input = `
+			[+ [1] [1]]
+		`;
+
+		const parser = new RhythmParser();
+		const result = parser.parse(input);
+
+		expect(result).to.have.length(1);
+		const container = result[0];
+		expect(container).to.haveOwnProperty("dimension");
+		expect(container.dimension).to.have.property("proportionality").that.equals("+");
+	});
+
+	it("handles ties between containers", () => {
+		const input = `
+			[[1] _ [1]]
+		`;
+
+		const parser = new RhythmParser();
+		const result = parser.parse(input);
+
+		expect(result).to.have.length(1);
+		const container = result[0];
+		expect(container).to.haveOwnProperty("contents").that.is.an.instanceOf(Array).with.length(2);
+		expect(container.contents[0]).to.haveOwnProperty("tie").that.equals(true);
+	});
+
+	it("handles ties between ranged containers", () => {
+		const input = `
+			[] {3
+				(1) [] _
+				(1) []
+			}
+		`;
+
+		const parser = new RhythmParser();
+		const result = parser.parse(input);
+
+		expect(result).to.have.length(1);
+		const container = result[0];
+		expect(container).to.haveOwnProperty("subdivisions");
+		expect(container.subdivisions).to.haveOwnProperty("ranges").that.is.an.instanceOf(Array).with.length(2);
+		expect(container.subdivisions.ranges[0]).to.haveOwnProperty("tie").that.equals(true);
+	});
+
+	it("rejects ties at the beginning or end of a list of containers", () => {
+		try {
+			const input = `_[1]`
+			const parser = new RhythmParser();
+			parser.parse(input);
+			expect.fail("Should have thrown a parse error");
+		} catch (e) {}
+
+		try {
+			const input = `[1]_`
+			const parser = new RhythmParser();
+			parser.parse(input);
+			expect.fail("Should have thrown a parse error");
+		} catch (e) {}
+	});
 });

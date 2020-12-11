@@ -11,7 +11,9 @@
 				"--timeout",
 				"999999",
 				"--colors",
-				"${workspaceFolder}/test"
+				"${workspaceFolder}/test",
+				"--grep",
+				"'Grammar'"
 			],
 			"internalConsoleOptions": "openOnSessionStart",
 			"name": "Mocha Tests",
