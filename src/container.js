@@ -8,7 +8,11 @@ module.exports = class Container {
 		// Set internal proportionality and scale
 		if (containerDescription.dimension) {
 			const dim = containerDescription.dimension;
-			this._proportionality = dim.proportionality ? new Fraction(dim.proportionality) : new Fraction(1);
+			if (dim.proportionality === "+") {
+				this._proportionality = dim.proportionality;
+			} else {
+				this._proportionality = dim.proportionality ? new Fraction(dim.proportionality) : new Fraction(1);
+			}
 			this._scale = dim.scale ? dim.scale : new Fraction(1);
 		} else {
 			this._proportionality = new Fraction(1);
@@ -30,7 +34,8 @@ module.exports = class Container {
 				this._ranges = [];
 			}
 		} else {
-			throw new Exception("A container description must have contents or subdivisions");
+			this._division = 1;
+			this._ranges = [];
 		}
 
 		this._index = index;

@@ -4,6 +4,22 @@ const { RhythmParser, Nestup } = require("../index");
 
 describe("Nestup", () => {
 
+	it("finds the correct proportionality", () => {
+		const input = `[4] {1}`;
+		const parseTree = new RhythmParser().parse(input);
+		const nestup = new Nestup(parseTree);
+
+		expect(nestup.beatLength).to.equal(4);
+	});
+
+	it("finds the correct proportionality for a more complex expression", () => {
+		const input = `[4] {1} [,1/2] [+ [] []]`;
+		const parseTree = new RhythmParser().parse(input);
+		const nestup = new Nestup(parseTree);
+
+		expect(nestup.beatLength).to.equal(6.5);
+	});
+
 	it("generates events", () => {
 		const input = `[4] {1}`;
 		const parseTree = new RhythmParser().parse(input);
