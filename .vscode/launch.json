@@ -11,9 +11,7 @@
 				"--timeout",
 				"999999",
 				"--colors",
-				"${workspaceFolder}/test",
-				"--grep",
-				"'Sized Containers'"
+				"${workspaceFolder}/test"
 			],
 			"internalConsoleOptions": "openOnSessionStart",
 			"name": "Mocha Tests",

@@ -133,7 +133,11 @@ module.exports = class Container {
 				} else if (out[i].type === Onset.type.ON && out[i + 1].type === Onset.type.OFF) {
 					out.splice(i + 1, 1);
 				} else {
-					out.splice(i, 1);
+					if (out[i].path && out[i + 1].path && out[i].path.length > out[i + 1].path.length) {
+						out.splice(i + 1, 1);
+					} else {
+						out.splice(i, 1);
+					}
 				}
 			} else {
 				i++;
