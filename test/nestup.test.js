@@ -1,7 +1,6 @@
 require("mocha");
 const { expect } = require("chai");
-const { Phrase, RhythmParser, Nestup } = require("../index");
-const Fraction = require("fraction.js");
+const { RhythmParser, Nestup } = require("../index");
 
 describe("Nestup", () => {
 

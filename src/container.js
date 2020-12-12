@@ -6,11 +6,13 @@ module.exports = class Container {
 	constructor(containerDescription, index) {
 
 		// Set internal proportionality and scale
-		if (containerDescription.dimensions) {
-			this._proportionality = dimensions.proportionality ? dimensions.proportionality : new Fraction(1);
-			this._scale = dimensions._scale ? dimensions._scale : new Fraction(1);
+		if (containerDescription.dimension) {
+			const dim = containerDescription.dimension;
+			this._proportionality = dim.proportionality ? new Fraction(dim.proportionality) : new Fraction(1);
+			this._scale = dim.scale ? dim.scale : new Fraction(1);
 		} else {
-			this._proportionality = this._scale = 1;
+			this._proportionality = new Fraction(1);
+			this._scale = new Fraction(1);
 		}
 
 		if (containerDescription.contents) {
@@ -69,15 +71,15 @@ module.exports = class Container {
 			const totalP = this._contents.reduce((prev, c) => prev.add(c.proportionality), new Fraction(0));
 			this._contents.forEach(c => {
 				const onsets = c.normalizedOnsets();
+				const scale = c.proportionality.div(totalP);
 				onsets.forEach(o => {
 					out.push(new Onset(
-						onset.time.div(totalP).add(runningP),
+						o.time.mul(scale).add(runningP),
 						o.type,
-						(this._index !== undefined) ? `${this._index}${onset.path}` : undefined
+						(this._index !== undefined) ? `${this._index}${o.path}` : undefined
 					));
-
-					runningP = runningP.add(o.proportionality.div(totalP));
 				});
+				runningP = runningP.add(scale);
 			});
 		} else {
 

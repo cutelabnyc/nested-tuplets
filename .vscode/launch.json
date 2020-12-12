@@ -13,7 +13,7 @@
 				"--colors",
 				"${workspaceFolder}/test",
 				"--grep",
-				"'Subdivided Containers'"
+				"'Sized Containers'"
 			],
 			"internalConsoleOptions": "openOnSessionStart",
 			"name": "Mocha Tests",

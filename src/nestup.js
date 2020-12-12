@@ -1,11 +1,13 @@
-const Phrase = require("./phrase");
+const Container = require("./container");
 const Onset = require("./onset");
 const Fraction = require("fraction.js");
 const memoize = require("memoizee");
 
 module.exports = class Nestup{
 	constructor(parseTree) {
-		this._phrases = parseTree.map((p, idx) => new Phrase(p, idx + 1));
+		// Nestup roots everything in a single, additive container
+		const rootContainerDescripiton = { dimension: { proportionality: "+", scale: 1 }, contents: parseTree };
+		this._rootContainer = new Container(rootContainerDescripiton, 1);
 	}
 
 	get beatLength() {
@@ -21,29 +23,11 @@ module.exports = class Nestup{
 	}
 
 	_inherentLength = memoize(() => {
-		return this._phrases.reduce((prev, {length, beatRatio}) => beatRatio.mul(length).add(prev), new Fraction(0));
+		return this._rootContainer.proportionality;
 	});
 
 	_normalizedOnsets = memoize(() => {
-		// Collect the total number of beats
-		const totalBeats = this._inherentLength();
-
-		// Scale the normalized onset times in each phrase by the beat length in each phrase
-		let beatOffset = new Fraction(0);
-		let onsets = [];
-		this._phrases.forEach(p => {
-			const { length, beatRatio } = p;
-			const phraseOnsets = p.normalizedOnsets();
-			const scaledOnsetTimes = phraseOnsets.map(po => new Onset(
-				beatRatio.mul(length).mul(po.time).div(totalBeats).add(beatOffset),
-				po.type,
-				po.path)
-			);
-			beatOffset = beatOffset.add(beatRatio.mul(length).div(totalBeats));
-			onsets = onsets.concat(scaledOnsetTimes);
-		});
-
-		return onsets;
+		return this._rootContainer.normalizedOnsets();
 	});
 
 	_snapToGrid = memoize((events, tickDuration) => {
