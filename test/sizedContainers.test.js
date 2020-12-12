@@ -1,6 +1,6 @@
 require("mocha");
 const { expect } = require("chai");
-const { Container, RhythmParser, Nestup } = require("../index");
+const { Container, RhythmParser, Nestup, Onset } = require("../index");
 const Fraction = require("fraction.js");
 
 describe("Sized Containers", () => {
@@ -56,5 +56,37 @@ describe("Sized Containers", () => {
 		expect(onsets[1].path).to.equal("111");
 		expect(onsets[2].path).to.equal("1111");
 		expect(onsets[3].path).to.equal("1111");
+	});
+
+	it("handles ties between subcontainers", () => {
+		const input = `[[] _ []]`;
+		const parseTree = new RhythmParser().parse(input);
+
+		expect(parseTree).to.be.an.instanceOf(Array).with.length(1);
+
+		const nestup = new Nestup(parseTree);
+		const onsets = nestup._normalizedOnsets();
+
+		expect(onsets).to.be.an.instanceOf(Array).with.length(2);
+		expect(onsets[0].time.equals(new Fraction(0))).to.be.true;
+		expect(onsets[0].type).equals(Onset.type.ON);
+		expect(onsets[1].time.equals(new Fraction(1))).to.be.true;
+		expect(onsets[1].type).equals(Onset.type.OFF);
+	});
+
+	it("handles ties between ranged containers", () => {
+		const input = `[] {2 (1) [] _ (2) []}`;
+		const parseTree = new RhythmParser().parse(input);
+
+		expect(parseTree).to.be.an.instanceOf(Array).with.length(1);
+
+		const nestup = new Nestup(parseTree);
+		const onsets = nestup._normalizedOnsets();
+
+		expect(onsets).to.be.an.instanceOf(Array).with.length(2);
+		expect(onsets[0].time.equals(new Fraction(0))).to.be.true;
+		expect(onsets[0].type).equals(Onset.type.ON);
+		expect(onsets[1].time.equals(new Fraction(1))).to.be.true;
+		expect(onsets[1].type).equals(Onset.type.OFF);
 	});
 });

@@ -63,7 +63,7 @@ sized_container ->
 unsized_container ->
 	  unsized_contents_with_subcontainers {% d => d[0] %}
 	| unsized_contents _:? subdivisions {% d => { return { dimension: d[0].dimension, subdivisions: d[2] }} %}
-	| unsized_contents {% d => { return { dimension: undefined }} %}
+	| unsized_contents {% d => d[0] %}
 
 # Sized contents have explicit dimension
 sized_contents -> %ls _:? dimension _:? %rs {% d => { return { dimension: d[2] }} %}
@@ -73,7 +73,7 @@ sized_contents_with_subcontainers ->
 
 # Unsized contents have no explicit dimension, only contents
 unsized_contents ->
-	%ls _:? %rs {% d => { return { dimension: undefined }} %}
+	%ls _:? %rs {% d => { return { dimension: undefined, subdivisions: {division: 1} }} %}
 
 unsized_contents_with_subcontainers ->
 	%ls container_list_or_subdivisions _:? %rs {% d => { return { dimension: undefined, contents: d[1] }} %}
@@ -95,7 +95,7 @@ subdivisions ->
 ranged_container_list ->
 	  ranged_container {% d => [d[0]] %}
 	| ranged_container ranged_container_list {% d => [d[0]].concat(d[1]) %}
-	| ranged_container _:? %underscore ranged_container_list {% d => { d[0].tie = true; return [d[0]].concat(d[3]); } %}
+	| ranged_container _:? %underscore ranged_container_list {% d => { d[0].container.tie = true; return [d[0]].concat(d[3]); } %}
 
 # A ranged container is a range followed by an unsized container, or a range followed by subdivisions
 ranged_container ->

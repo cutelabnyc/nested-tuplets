@@ -34,6 +34,7 @@ module.exports = class Container {
 		}
 
 		this._index = index;
+		this._tie = !!containerDescription.tie;
 	}
 
 	get proportionality() {
@@ -50,6 +51,10 @@ module.exports = class Container {
 
 	get scale() {
 		return this._scale;
+	}
+
+	get tie() {
+		return this._tie;
 	}
 
 	normalizedOnsets() {
@@ -69,17 +74,24 @@ module.exports = class Container {
 		if (this._contents) {
 			let runningP = new Fraction(0);
 			const totalP = this._contents.reduce((prev, c) => prev.add(c.proportionality), new Fraction(0));
+			let lastContainerTied = false;
 			this._contents.forEach(c => {
 				const onsets = c.normalizedOnsets();
+				if (c.tie) onsets.pop(); // Get rid of the last note off event
 				const scale = c.proportionality.div(totalP);
 				onsets.forEach(o => {
-					out.push(new Onset(
-						o.time.mul(scale).add(runningP),
-						o.type,
-						(this._index !== undefined) ? `${this._index}${o.path}` : undefined
-					));
+					if (lastContainerTied && o.type === Onset.type.ON) {
+						lastContainerTied = false;
+					} else {
+						out.push(new Onset(
+							o.time.mul(scale).add(runningP),
+							o.type,
+							(this._index !== undefined) ? `${this._index}${o.path}` : undefined
+						));
+					}
 				});
 				runningP = runningP.add(scale);
+				lastContainerTied = c.tie;
 			});
 		} else {
 
@@ -95,18 +107,25 @@ module.exports = class Container {
 			}
 
 			// Add onsets from all the other subtuplets
+			let lastContainerTied = false;
 			this._ranges.forEach(({range, container: st}) => {
 				const {index, length} = range;
 				let offset = new Fraction((index - 1), this._division);
 				let scale = new Fraction(length, this._division);
 				let onsets = st.normalizedOnsets();
+				if (st.tie) onsets.pop(); // Get rid of the last note off event
 				onsets.forEach(onset => {
-					out.push(new Onset(
-						onset.time.mul(scale).add(offset),
-						onset.type,
-						(this._index !== undefined) ? `${this._index}${onset.path}` : undefined
-					));
+					if (lastContainerTied && onset.type === Onset.type.ON) {
+						lastContainerTied = false
+					} else {
+						out.push(new Onset(
+							onset.time.mul(scale).add(offset),
+							onset.type,
+							(this._index !== undefined) ? `${this._index}${onset.path}` : undefined
+						));
+					}
 				});
+				lastContainerTied = st.tie;
 			});
 
 			// sort

@@ -190,7 +190,7 @@ describe("Grammar: Generating parse trees", () => {
 		const container = result[0];
 		expect(container).to.haveOwnProperty("subdivisions");
 		expect(container.subdivisions).to.haveOwnProperty("ranges").that.is.an.instanceOf(Array).with.length(2);
-		expect(container.subdivisions.ranges[0]).to.haveOwnProperty("tie").that.equals(true);
+		expect(container.subdivisions.ranges[0].container).to.haveOwnProperty("tie").that.equals(true);
 	});
 
 	it("rejects ties at the beginning or end of a list of containers", () => {
