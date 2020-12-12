@@ -13,7 +13,7 @@
 				"--colors",
 				"${workspaceFolder}/test",
 				"--grep",
-				"'Grammar'"
+				"'Subdivided Containers'"
 			],
 			"internalConsoleOptions": "openOnSessionStart",
 			"name": "Mocha Tests",

@@ -1,4 +1,4 @@
-const Tuplet = require("./tuplet");
+const Tuplet = require("./container");
 const Fraction = require("fraction.js");
 
 module.exports = class Phrase {
