@@ -172,4 +172,28 @@ describe("Nestup", () => {
 		expect(midiLikeEvents[2].time).to.equal(80);
 		expect(midiLikeEvents[3].time).to.equal(100);
 	});
+
+	it("rejects a container that is both a parent as well as subdivided", () => {
+		const input = `
+			[+ [] [] ] {2}
+		`
+
+		try {
+			const parseTree = new RhythmParser().parse(input);
+			const nestup = new Nestup(parseTree);
+			expect.fail("Should have produced a parse error");
+		} catch (e) {}
+	});
+
+	it("rejects a list of two or more subcontaines without explicit containers", () => {
+		const input = `
+			[+ {2} {2} ]
+		`
+
+		try {
+			const parseTree = new RhythmParser().parse(input);
+			const nestup = new Nestup(parseTree);
+			expect.fail("Should have produced a parse error");
+		} catch (e) {}
+	});
 });
