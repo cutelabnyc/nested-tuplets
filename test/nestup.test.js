@@ -1,6 +1,7 @@
 require("mocha");
 const { expect } = require("chai");
-const { RhythmParser, Nestup } = require("../index");
+const { default: Fraction } = require("fraction.js");
+const { RhythmParser, Nestup, Onset } = require("../index");
 
 describe("Nestup", () => {
 
@@ -140,5 +141,35 @@ describe("Nestup", () => {
 		expect(midiLikeEvents[2].time).to.equal(25);
 		expect(midiLikeEvents[3].on).to.equal(false);
 		expect(midiLikeEvents[3].time).to.equal(50);
+	});
+
+	it("handles a flexible container inside a fixed container", () => {
+		const input = `[2
+			[+ [4] []]
+		]
+		`;
+
+		const parseTree = new RhythmParser().parse(input);
+		const nestup = new Nestup(parseTree);
+		const onsets = nestup._normalizedOnsets();
+
+		expect(onsets).to.be.an.instanceOf(Array).with.length(3);
+		expect(onsets[0].type).to.equal(Onset.type.ON);
+		expect(onsets[1].type).to.equal(Onset.type.ON);
+		expect(onsets[2].type).to.equal(Onset.type.OFF);
+		expect(onsets[0].time.equals(new Fraction(0))).to.be.true;
+		expect(onsets[1].time.equals(new Fraction(4, 5))).to.be.true;
+		expect(onsets[2].time.equals(new Fraction(1))).to.be.true;
+
+		const midiLikeEvents = nestup.onOffEvents(100);
+		expect(midiLikeEvents).to.be.an.instanceOf(Array).with.length(4);
+		expect(midiLikeEvents[0].on).to.be.true;
+		expect(midiLikeEvents[1].on).to.be.false;
+		expect(midiLikeEvents[2].on).to.be.true;
+		expect(midiLikeEvents[3].on).to.be.false;
+		expect(midiLikeEvents[0].time).to.equal(0);
+		expect(midiLikeEvents[1].time).to.equal(80);
+		expect(midiLikeEvents[2].time).to.equal(80);
+		expect(midiLikeEvents[3].time).to.equal(100);
 	});
 });
