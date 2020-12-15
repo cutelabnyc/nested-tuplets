@@ -54,14 +54,14 @@ How are these two examples equivalent? Well, let's look at how Nestup works.
 1. You specify a number of subdivisions using the **subdivider** `{}`, so in our first example, we start by describing four subdivisions of our period of time, our **container**, with `{4}`.
 
 2. To describe a further level of rhythmic subdivision, you use a **range** `(x, y)`, wherein you identify:
-- x: the **range start** where, within the previously described events, this further level of rhythmic subdivision is to take place, and
-- y: the **range length**, the duration of the new rhythmic subdivision, described in terms of number of events in the preceding rhythmic level over which the new rhythmic subdivision should extend.
+- x: the **range start** where, within the previously described subdivisions, this further level of rhythmic subdivision is to take place, and
+- y: the **range length**, the duration of the new rhythmic subdivision, in terms of a number of subdivisions in the preceding rhythmic level.
 
-3. So in the initial example, `(1, 2)` describes that from the **first** event of the four events described by `{4}`, and lasting for the length of **two** of those events, there should be some number of events. How many events? The first example specifies `{5}`.
+3. So, in the initial example, `(1, 2)` describes that from the **first** event of the four events described by `{4}`, and lasting for the length of **two** of those events, there should be some number of events. How many events? The first example specifies `{5}`.
 
 This gives us the rhythm from Figure 1: four events, where the first two events have been split equally into five events.
 
-If we wrote this rhythm using the second Nestup code example, we've simply described this rhythm slightly differently. The example begins by describing *two* events, the first then being subdivided into five events `{5}` that take up the entire space of the first event, as described by `(1, 1)`, and the second being subdivided into two events over the space of the second event: `(2, 1) {2}`.
+If we wrote this rhythm using the second Nestup code example, we've simply described this rhythm slightly differently. The example begins by subdividing the period of time into *two* events, the first being subdivided into five subdivisions `{5}` that take up the entire space of the first event, as described by `(1, 1)`, and the second being subdivided into two subdivisions: `(2, 1) {2}`.
 
 
 
@@ -96,3 +96,9 @@ And `{13}` gives us:
 
 ## A nested tuplet
 If we want to place an evenly-spaced rhythm somewhere within another rhythm composed of evenly-spaced events, we are essentially nesting a tuplet 
+
+Sam's nesting language:
+
+Once you’ve subdivided a container, you can place more containers within those subdivisions. To place one of these ranged containers, you first specify a range, followed by the container. For example, to place the container [ [2] [1] ] on the first beat of a container subdivided into 3 parts, you would write {3 (1) [ [2] [1]] }
+
+You can stretch that subcontainer across multiple subdivions as well by adding a length to the range expression. For example {3 (1, 2) [ [2] [1] ]} would stretch the container across two subdivisions.
