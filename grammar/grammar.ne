@@ -76,12 +76,12 @@ unsized_contents ->
 	%ls _:? %rs {% d => { return { dimension: undefined, subdivisions: {division: 1} }} %}
 
 unsized_contents_with_subcontainers ->
-	%ls container_list_or_subdivisions _:? %rs {% d => { return { dimension: undefined, contents: d[1] }} %}
+	%ls container_list_or_subdivisions _:? %rs {% d => { return { dimension: { proportionality: "+", scale: 1 }, contents: d[1] }} %}
 
 # Container dimension must include at least one of proportionality or scale
 dimension ->
 	  integer {% d => { return { proportionality: d[0], scale: new Fraction(1) }} %}
-	| %comma _:? ratio {% d => { return { proportionality: 1, scale: d[2] }} %}
+	| %comma _:? ratio {% d => { return { proportionality: "+", scale: d[2] }} %}
 	| integer _:? %comma _:? ratio {% d => { return { proportionality: d[0], scale: d[4] }} %}
 	| %plus {% d => { return { proportionality: "+", scale: 1 }} %}
 	| %plus _:? %comma _:? ratio {% d => { return { proportionality: "+", scale: d[4] }} %}
