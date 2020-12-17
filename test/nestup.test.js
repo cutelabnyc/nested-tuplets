@@ -14,7 +14,7 @@ describe("Nestup", () => {
 	});
 
 	it("finds the correct proportionality for a more complex expression", () => {
-		const input = `[4] {1} [,1/2] [+ [] []]`;
+		const input = `[4] {1} [,1/2] [ [] [] ]`;
 		const parseTree = new RhythmParser().parse(input);
 		const nestup = new Nestup(parseTree);
 
@@ -145,7 +145,7 @@ describe("Nestup", () => {
 
 	it("handles a flexible container inside a fixed container", () => {
 		const input = `[2
-			[+ [4] []]
+			[ [4] [] ]
 		]
 		`;
 
@@ -175,7 +175,7 @@ describe("Nestup", () => {
 
 	it("rejects a container that is both a parent as well as subdivided", () => {
 		const input = `
-			[+ [] [] ] {2}
+			[ [] [] ] {2}
 		`
 
 		try {
@@ -187,7 +187,7 @@ describe("Nestup", () => {
 
 	it("rejects a list of two or more subcontaines without explicit containers", () => {
 		const input = `
-			[+ {2} {2} ]
+			[ {2} {2} ]
 		`
 
 		try {
