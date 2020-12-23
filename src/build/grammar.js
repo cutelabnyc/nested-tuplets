@@ -17,7 +17,6 @@ const lexer = moo.compile({
   ls: /\[/,
   rs: /\]/,
   slash: /\//,
-  plus: /\+/,
   underscore: /_/
 });
 
@@ -89,12 +88,6 @@ var grammar = {
     {"name": "dimension$ebnf$3", "symbols": ["_"], "postprocess": id},
     {"name": "dimension$ebnf$3", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "dimension", "symbols": ["integer", "dimension$ebnf$2", (lexer.has("comma") ? {type: "comma"} : comma), "dimension$ebnf$3", "ratio"], "postprocess": d => { return { proportionality: d[0], scale: d[4] }}},
-    {"name": "dimension", "symbols": [(lexer.has("plus") ? {type: "plus"} : plus)], "postprocess": d => { return { proportionality: "+", scale: 1 }}},
-    {"name": "dimension$ebnf$4", "symbols": ["_"], "postprocess": id},
-    {"name": "dimension$ebnf$4", "symbols": [], "postprocess": function(d) {return null;}},
-    {"name": "dimension$ebnf$5", "symbols": ["_"], "postprocess": id},
-    {"name": "dimension$ebnf$5", "symbols": [], "postprocess": function(d) {return null;}},
-    {"name": "dimension", "symbols": [(lexer.has("plus") ? {type: "plus"} : plus), "dimension$ebnf$4", (lexer.has("comma") ? {type: "comma"} : comma), "dimension$ebnf$5", "ratio"], "postprocess": d => { return { proportionality: "+", scale: d[4] }}},
     {"name": "subdivisions$ebnf$1", "symbols": ["ranged_container_list"], "postprocess": id},
     {"name": "subdivisions$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "subdivisions$ebnf$2", "symbols": ["_"], "postprocess": id},

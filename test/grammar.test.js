@@ -149,7 +149,7 @@ describe("Grammar: Generating parse trees", () => {
 
 	it("handles a container with additive proportionality", () => {
 		const input = `
-			[+ [1] [1]]
+			[ [1] [1] ]
 		`;
 
 		const parser = new RhythmParser();

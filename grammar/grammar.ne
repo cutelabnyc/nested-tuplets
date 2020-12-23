@@ -14,7 +14,6 @@ const lexer = moo.compile({
   ls: /\[/,
   rs: /\]/,
   slash: /\//,
-  plus: /\+/,
   underscore: /_/
 });
 %}
@@ -83,8 +82,6 @@ dimension ->
 	  integer {% d => { return { proportionality: d[0], scale: new Fraction(1) }} %}
 	| %comma _:? ratio {% d => { return { proportionality: "+", scale: d[2] }} %}
 	| integer _:? %comma _:? ratio {% d => { return { proportionality: d[0], scale: d[4] }} %}
-	| %plus {% d => { return { proportionality: "+", scale: 1 }} %}
-	| %plus _:? %comma _:? ratio {% d => { return { proportionality: "+", scale: d[4] }} %}
 
 # Subdivisions is just a subdivision number followed by a list of ranged containers
 subdivisions ->
