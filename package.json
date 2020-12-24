@@ -20,9 +20,11 @@
     "nearley": "^2.19.6"
   },
   "scripts": {
-    "pretest": "yarn run build",
+    "pretest": "yarn run build-grammar",
     "postinstall": "yarn run build",
-    "build": "mkdir -p src/build && nearleyc grammar/grammar.ne --out ./src/build/grammar.js",
+    "build": "yarn run build-grammar && yarn run build-pack",
+    "build-grammar": "mkdir -p src/build && nearleyc grammar/grammar.ne --out ./src/build/grammar.js",
+    "build-pack": "webpack",
     "start": "node cli.js",
     "test": "mocha",
     "test-grammar": "mocha -g Grammar"
@@ -30,7 +32,14 @@
   "directories": {
     "test": "test"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.2.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cutelabnyc/nested-tuplets.git"

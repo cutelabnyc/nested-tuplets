@@ -3,7 +3,7 @@ const Onset = require("./onset");
 const Fraction = require("fraction.js");
 const memoize = require("memoizee");
 
-module.exports = class Nestup{
+module.exports = class Nestup {
 	constructor(parseTree) {
 		// Nestup roots everything in a single, additive container
 		const rootContainerDescripiton = { dimension: { proportionality: "+", scale: 1 }, contents: parseTree };
