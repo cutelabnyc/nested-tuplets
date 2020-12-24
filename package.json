@@ -21,7 +21,6 @@
   },
   "scripts": {
     "pretest": "yarn run build-grammar",
-    "postinstall": "yarn run build",
     "build": "yarn run build-grammar && yarn run build-pack",
     "build-grammar": "mkdir -p src/build && nearleyc grammar/grammar.ne --out ./src/build/grammar.js",
     "build-pack": "webpack",
