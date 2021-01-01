@@ -10,12 +10,12 @@ It's Nestup! The domain specific language for describing and generating nested t
 | `[[2] [2]]`   | Two events, each 2 beats long | ![](./img/cheat-02.png)
 | `[3 [2] [3]]` | Two events, squeezed into 3 beats. The first will have length `2/5` of 3 beats, and the second will have length `3/5` of 3 beats. | ![](./img/cheat-03.png)
 | `[4] {3}` | Three events, evenly spaced over 4 beats (aka a triplet over 4 beats) | ![](./img/cheat-04.png)
-| `[4] {3} [4] {5}` | A four beat triplet followed by a four beat quintuplet | ![](./img/cheat-05.png)
+| `[4] {3} [4] {5}` | A 3:4 triplet followed by a 5:4 quintuplet | ![](./img/cheat-05.png)
 | `[4] {3 (2) {3} }` | A triplet, where the second event has been itself subdivided into a triplet. A total of 5 note events | ![](./img/cheat-06.png)
 | `[4] {3 (2, 2) {5} }` | A triplet, where the second and third beat have been replaced with a quintuplet over that same time. A total of 6 events | ![](./img/cheat-07.png) |
 | `[4 [1] [1] {0} [1]]` | Three equally long notes in the space of 4 beats (aka a triplet), where the second note is a rest | ![](./img/cheat-08.png) |
 | `[4 [1] [1] _ [1] [1]]` | Four notes in the space of four beats, The second note is tied to the third. | ![](./img/cheat-09.png) |
-| `[4 {5 (2) [] _ (3) [] }]` | Four notes in the space of four beats, The second note is tied to the third. | ![](./img/cheat-10.png) |
+| `[4 {5 (2) [] _ (3) [] }]` | Five notes in the space of four beats, where the second note is tied to the third. | ![](./img/cheat-10.png) |
 
 ## Getting set up
 
