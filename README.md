@@ -2,6 +2,21 @@
 
 It's Nestup! The domain specific language for describing and generating nested tuplets, just like you've always wanted. It also can divide anything that has dimension.
 
+## Cheat Sheet
+
+| Nestup_example_expression     | Description | Piano_roll |
+| ----------- | ----------- | ----------- |
+| `[4]`      | One event, 4 beats long | ![](./img/cheat-01.png)
+| `[[2] [2]]`   | Two events, each 2 beats long | ![](./img/cheat-02.png)
+| `[3 [2] [3]]` | Two events, squeezed into 3 beats. The first will have length `2/5` of 3 beats, and the second will have length `3/5` of 3 beats. | ![](./img/cheat-03.png)
+| `[4] {3}` | Three events, evenly spaced over 4 beats (aka a triplet over 4 beats) | ![](./img/cheat-04.png)
+| `[4] {3} [4] {5}` | A four beat triplet followed by a four beat quintuplet | ![](./img/cheat-05.png)
+| `[4] {3 (2) {3} }` | A triplet, where the second event has been itself subdivided into a triplet. A total of 5 note events | ![](./img/cheat-06.png)
+| `[4] {3 (2, 2) {5} }` | A triplet, where the second and third beat have been replaced with a quintuplet over that same time. A total of 6 events | ![](./img/cheat-07.png) |
+| `[4 [1] [1] {0} [1]]` | Three equally long notes in the space of 4 beats (aka a triplet), where the second note is a rest | ![](./img/cheat-08.png) |
+| `[4 [1] [1] _ [1] [1]]` | Four notes in the space of four beats, The second note is tied to the third. | ![](./img/cheat-09.png) |
+| `[4 {5 (2) [] _ (3) [] }]` | Four notes in the space of four beats, The second note is tied to the third. | ![](./img/cheat-10.png) |
+
 ## Getting set up
 
 This library uses `yarn` as opposed to `npm`, so before you can do anything else you'll need `yarn` installed on your system. From there simply run
@@ -53,7 +68,7 @@ How are these two examples equivalent? Well, let's look at how Nestup works.
 
 2. A container can contain child containers—in our first example, our container contains two containers of equal size, `[]` and `[]`.
 
-3. A container can be subvidided equally using the **subdivider** `{}`. In our first example, the first child container is subdivided into 5 subdivisions with `{5}`, and the second child is subdivided into 2 with `{2}`. 
+3. A container can be subvidided equally using the **subdivider** `{}`. In our first example, the first child container is subdivided into 5 subdivisions with `{5}`, and the second child is subdivided into 2 with `{2}`.
 
 In our second example, we describe the rhythm a little differently.
 
@@ -77,7 +92,7 @@ We can now take a step back and describe the Nestup language systematically, sta
 ```
 []
 ```
-The container 
+The container
 
 --alex, should i show this as a quarter note or a whole note first? or eschew notation altogether?--
 
@@ -140,6 +155,6 @@ some "why nestup" draft:
 
 
 1. *tigran, carnatic rhythm, this is hard to do in a DAW or engraving software, hard to express, even harder to program in a DAW*
-2. DAWs are built to facilitate certian kinds of common rhythmic subdivision: mostly duple (splitting in halfs) and triple (splitting into thirds). For what is sometimes reffered to as "irregular" division, division of a beat into some number of subdivisions or tuplets 
-3. sometimes with a further, nested, subdivision or *tuplet*, no simple solution currently exists. 
+2. DAWs are built to facilitate certian kinds of common rhythmic subdivision: mostly duple (splitting in halfs) and triple (splitting into thirds). For what is sometimes reffered to as "irregular" division, division of a beat into some number of subdivisions or tuplets
+3. sometimes with a further, nested, subdivision or *tuplet*, no simple solution currently exists.
 4. [fragmentary rhythms](https://www.instagram.com/p/CFxKMSMAS22/?utm_source=ig_web_copy_link) without changing tempo and loops composed of such rhythms have heretofore been impossible
