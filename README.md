@@ -92,15 +92,24 @@ We can now take a step back and describe the Nestup language systematically, sta
 ```
 []
 ```
-The container
+The **container,** specified by the square brackets `[]`, defines a period of time, for example, a beat or a measure. If you are using Nestup to generate musical rhythms in a DAW like Ableton Live, the simple expression `[]` will generate one note spanning one beat in the DAW's global time signature. This is because every container has a **size**, which is by default 1. If you wanted your container to be 4 beats long, like a whole note in a 4/4 time signature, you would define the container size with `[4]`. *The container size can be any positive integer.*
 
---alex, should i show this as a quarter note or a whole note first? or eschew notation altogether?--
+Our `[4]` gives us a rhythm like:
 
+![a whole note](img/ex-1.png "Figure 2") or, in the piano roll, ![a whole note in piano roll](img/pno-roll-1.png "Figure 3") 
 
+#### Flexible Container
+A container can be divided into child containers, for example, `[[2][2]]` will divide the container into two. Those child containers have a size of 2, and since the parent container has been given no explicit size, it inherits its size from the sum of its children's sizes—in this case, a size of 4. 
 
+![two half notes in piano roll](img/pno-roll-2.png "Figure 4") 
 
+To give another example, `[[3][2]]` will give us a container of size 5, for example, a five beat long rhythm, with a note spanning three beats and a note spanning two beats, like:
 
+![[[3][2]] in piano roll](img/pno-roll-3.png "Figure 5") 
 
+#### Fixed Container
+
+What if you wanted to specify the size of the parent container to be 4, but keep the 3:2 porportion of the child containers? 
 
 
 
