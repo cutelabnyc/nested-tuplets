@@ -9,6 +9,7 @@ It's Nestup! The domain specific language for describing and generating nested t
 | `[4]`      | One event, 4 beats long | ![](./img/cheat-01.png)
 | `[[2] [2]]`   | Two events, each 2 beats long | ![](./img/cheat-02.png)
 | `[3 [2] [3]]` | Two events, squeezed into 3 beats. The first will have length `2/5` of 3 beats, and the second will have length `3/5` of 3 beats. | ![](./img/cheat-03.png)
+|`[[][]][2,3/7[][]]`|Four events, with the second two events scaled at a ratio of `3:7` to the first two. |![](./img/cheat-scale2.png)
 | `[4] {3}` | Three events, evenly spaced over 4 beats (aka a triplet over 4 beats) | ![](./img/cheat-04.png)
 | `[4] {3} [4] {5}` | A 3:4 triplet followed by a 5:4 quintuplet | ![](./img/cheat-05.png)
 | `[4] {3 (2) {3} }` | A triplet, where the second event has been itself subdivided into a triplet. A total of 5 note events | ![](./img/cheat-06.png)
@@ -29,7 +30,7 @@ to get the repo all set up.
 
 ## Why Nestup?
 
-put why nestup language here
+*/put why nestup language here/*
 
 ## Dividing Containers
 
@@ -99,7 +100,7 @@ Our `[4]` gives us a rhythm like:
 ![a whole note](img/ex-1.png "Figure 2") or, in the piano roll, ![a whole note in piano roll](img/pno-roll-1.png "Figure 3") 
 
 #### Flexible Container
-A container can be divided into child containers, for example, `[[2][2]]` will divide the container into two. Those child containers have a size of 2, and since the parent container has been given no explicit size, it inherits its size from the sum of its children's sizes—in this case, a size of 4. 
+A container can be divided into child containers, for example, `[[2][2]]` will divide the container into two. Those child containers have a size of 2, and since the parent container has been given no explicit size, it is **flexible**, and inherits its size from the sum of its children's sizes—in this case, a size of 4. 
 
 ![two half notes in piano roll](img/pno-roll-2.png "Figure 4") 
 
@@ -111,19 +112,39 @@ To give another example, `[[3][2]]` will give us a container of size 5, for exam
 
 What if you wanted to specify the size of the parent container to be 4, but keep the 3:2 porportion of the child containers? 
 
+You can do this by specifying a size of the parent container, making it a **fixed container**, as with `[4[3][2]]`
+
+![[4[3][2]] in piano roll](img/pno-roll-4.png "Figure 6") 
+
+With a combination of fixed and flexible parent and child containers, we can generate a wide variety of rhythms.
+```
+[2[5][2]]
+[[][2]]
+[1[[][]][]]
+[5[2[5][2]]
+[[][2]]
+[1[[][]][]]]
+```
+![container example in piano roll](img/pno-roll-5.png "Figure 7") 
+or 
+![container example on the staff](img/ex-containers.png "Figure 8") 
+
+#### Container Scale
+
+You can also **scale** the size of a container by a ratio of two positive integers. For example, `[2[][]][2, 3/5[][]]`, would generate a container of size two with two child containers, followed by a second container of size two with two child containers, this second one being 3/5 the size of the first.
+
+![container scale in piano roll](img/pno-roll-6.png "Figure 9") 
+
+In this way, Nestup facilitates the creation of looping clips with fragmentary meters in DAWs such as Ableton Live. Note that in the figure above, the end point of the loop is off of Ableton's "grid."
+
+Note: if you wish to scale a container and want to maintain its flexible size, simply writing a comma `,` followed by the desired ratio will add a container scale while maintaining the container's flexibility. For example, `[,8/3[][]]`
 
 
 
 
-
-
-
-
-
-
-
-
-
+*/
+what follows is not complete:
+/*
 
 
 ### The Subdivider
