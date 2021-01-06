@@ -65,13 +65,13 @@ Another way to write it could be:
 }
 ```
 
-How are these two examples equivalent? Well, let's look at how Nestup works.
+Nestup doesn't have an explicit notion of beats or time signatures, it simply divides containers (of time) and generates events. So, Nestup could render this rhythm in at least these two ways. To understand what these examples are doing, let's look at how Nestup works.
 
 ## How Nestup Works
 
 1. Here, we specify a **container** `[]`, with a **size** of 4, with `[4]`.
 
-2. A container can contain child containers—in our first example, our container contains two containers of equal size, `[]` and `[]`.
+2. A container can contain child containers—in our first example, our container contains two containers, `[]` and `[]`, of equal size.
 
 3. A container can be subvidided equally using the **subdivider** `{}`. In our first example, the first child container is subdivided into 5 subdivisions with `{5}`, and the second child is subdivided into 2 with `{2}`.
 
@@ -81,7 +81,7 @@ In our second example, we describe the rhythm a little differently.
 
 2. This container is subdivided into 4 subdivisions with `{4}`.
 
-3. A child container can be placed within those subdivisions, by specifying the **range start** where that container should start and the **range length**, which shows how long such a **ranged container** should stretch. In the second example, the ranged container is placed on the first subdivision, stretched across two subdivisions, with `(1,2)[]`.
+3. A child container can be placed within those subdivisions, by specifying that container's **range:** where it should start, and how long it should continue. In the second example, the ranged container is placed on the first subdivision, stretched across two subdivisions, with `(1,2)[]`.
 
 4. Finally, that ranged container is subdivided into 5 subdivisions with `{5}`.
 
@@ -136,13 +136,15 @@ or
 
 #### Container Scale
 
-You can also **scale** the size of a container by a ratio of two positive integers. For example, `[2[][]][2, 3/5[][]]`, would generate a container of size two with two child containers, followed by a second container of size two with two child containers, this second one being 3/5 the size of the first.
+You can also **scale** the size of a container by a ratio of two positive integers. It cannot be a decimal number. For example, `[2[][]][2, 3/5[][]]`, would generate a container of size two with two child containers, followed by a second container of size two with two child containers, this second one being 3/5 the size of the first.
 
 ![container scale in piano roll](img/pno-roll-6.png "Figure 9") 
 
 In this way, Nestup facilitates the creation of looping clips with fragmentary meters in DAWs such as Ableton Live. Note that in the figure above, the end point of the loop is off of Ableton's "grid."
 
-Note: if you wish to scale a container and want to maintain its flexible size, simply writing a comma `,` followed by the desired ratio will add a container scale while maintaining the container's flexibility. For example, `[,8/3[][]]`
+Note: if you wish to scale a container and want to maintain its flexible size, simply writing a comma `,` followed by the desired ratio will add a container scale while maintaining the container's flexibility. For example, `[,8/3[][]]`. 
+
+This would be a container of size 2, because it is a parent container with children whose sizes sum to 2. That size is then multiplied by 8/3 to produce its final size.
 
 
 ### The Subdivider
@@ -193,11 +195,11 @@ In Nestup, rests are written using a subdivider with a value of 0, `{0}`.
 For example,
 ```
 []
-[]{0}
-[3]{5
-	(2){0}
-	(4,2){0}
-	}
+[] {0}
+[3] {5
+  (2) {0}
+  (4, 2) {0}
+}
 ```
 ![rests](img/pno-roll-10.png "Figure 16")
 
