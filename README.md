@@ -30,7 +30,11 @@ to get the repo all set up.
 
 ## Why Nestup?
 
-*/put why nestup language here/*
+Most DAWs and other music software are designed to facilitate creating music with rhythmic subdivisions that divide in twos and into threes. However, there are many types of music in the world, such as the tabla rhythms from Indian classical music, rhythms by jazz musicians such as Tigran Hamasyan, drawing from Armenian folk traditions, or the nested tuplets common to "New Complexity" composers like Brian Ferneyhough, that do not divide solely into twos and threes. Most of these rhythms are rather difficult to program in any DAW.
+
+In addition, DAWs that employ looping clips, for example Ableton Live or Logic Pro, facilitate the creation of clips that are defined by a number of 16th note subdivisions, making a loping clip of a "[fragmentary rhythm](https://www.instagram.com/p/CFxKMSMAS22/?utm_source=ig_web_copy_link)" very difficult to create.
+
+Nestup is designed to be a simple solution for these and other rhythmic needs.
 
 ## Dividing Containers
 
@@ -121,6 +125,7 @@ With a combination of fixed and flexible parent and child containers, we can gen
 [2[5][2]]
 [[][2]]
 [1[[][]][]]
+
 [5[2[5][2]]
 [[][2]]
 [1[[][]][]]]
@@ -140,51 +145,67 @@ In this way, Nestup facilitates the creation of looping clips with fragmentary m
 Note: if you wish to scale a container and want to maintain its flexible size, simply writing a comma `,` followed by the desired ratio will add a container scale while maintaining the container's flexibility. For example, `[,8/3[][]]`
 
 
-
-
-*/
-what follows is not complete:
-/*
-
-
 ### The Subdivider
 
+A positive integer wrapped in curly braces `{}` evenly divides a container into that many subdivisions. For example, `[4]{3}` might be rendered in conventional western musical notation as:
+
+![a half-note triplet](img/ex-3.png "Figure 10")
+
+In the same way, `[4]{1}` gives us:
+
+![a whole note](img/ex-1.png "Figure 11")
+
+And `[4]{13}` gives us:
+
+![a 13-let](img/ex-13.png "Figure 12")
+
+*Warning:* A container can only be subdivided with the subdivider if it has no child containers. For example, the expression `[[]]{3}` **is not valid.**
+
+If you are subdividing a container of size 1 with no sibling containers, you can leave off the preceding `[]`. For example, `[]{5}` and `{5}` are equivalent. However, `{5}{5}` or `{5}[]{4}` **are not valid.**
+
+#### Ranged Containers
+
+Once you’ve subdivided a container, you can place more containers within those subdivisions. To place one of these ranged containers, you first specify a **range start** with `()`, followed by the container. For example, to place the container `[[2][1]]` on the first beat of a container subdivided into 3 parts, you would write `[]{3(1) [[2][1]] }`.
+![ranged container](img/pno-roll-7.png "Figure 13")
+
+You can stretch that ranged container across multiple subdivisions by adding a **range length** to the range expression. For example, `[]{3 (1, 2) [[2][1]]}` would stretch the container across two subdivisions.
+![range, length](img/pno-roll-8.png "Figure 14")
+
+*Warning:* The size of the ranged container will always be determined by its range expression. For this reason, you can not give a ranged container a fixed size: `{3(1)[2]}` **is not valid**. Additionally, a ranged container cannot have siblings: `{3(1)[][]}` **is not valid**, though it can have children, as demonstrated in the examples above.
+
+### Ties and Rests
+
+Nestup has two additional features to help you generate rhythms: the ability to combine two adjascent containers, in a manner similar to a "tie" in western classical music notation, and the ability to insert silence over a container's duration, a "rest."
+
+#### Ties
+
+In Nestup, ties are written using the underscore `_` and connect sibling containers. When used, the subdivision before and after are combined. 
+
+For example:
+`[3]{5}_[]{3}` will give us:
+
+![tie](img/pno-roll-9.png "Figure 15")
+
+#### Rests
+
+In Nestup, rests are written using a subdivider with a value of 0, `{0}`.
+
+For example,
 ```
-{3}
+[]
+[]{0}
+[3]{5
+	(2){0}
+	(4,2){0}
+	}
 ```
-A non-zero whole number wrapped in curly braces describes that number of events evenly spaced inside of a container. The above example, `{3}` might be rendered in conventional western musical notation as:
+![rests](img/pno-roll-10.png "Figure 16")
 
-![a half-note triplet](img/ex-3.png "Figure 2")
+______
+## Ableton-specific notes
 
-*Figure 2*
+If you are using the Nestup Max For Live device to parse your Nestup expressions, these notes are for you.
 
-In the same way, `{1}` gives us:
+*Warning:* There is a known issue with Max For Live devices where if the device is not in focus (with the title bar of the device illuminated, for example), commands, such as ⌘+C or ⌘+V on Mac, will apply to the Live Session and not to the device, such as Nestup. You may be able to type into the Nestup code box, but this issue will persist. In addition, the character "0" will deactivate whichever device or track *is* in focus.
 
-![a whole note](img/ex-1.png "Figure 3")
-
-*Figure 3*
-
-And `{13}` gives us:
-
-![a 13-let](img/ex-13.png "Figure 4")
-
-*Figure 4*
-
-
-
-
-
-Sam's nesting language:
-
-Once you’ve subdivided a container, you can place more containers within those subdivisions. To place one of these ranged containers, you first specify a range, followed by the container. For example, to place the container [ [2] [1] ] on the first beat of a container subdivided into 3 parts, you would write {3 (1) [ [2] [1]] }
-
-You can stretch that subcontainer across multiple subdivions as well by adding a length to the range expression. For example {3 (1, 2) [ [2] [1] ]} would stretch the container across two subdivisions.
-
-
-some "why nestup" draft:
-
-
-1. *tigran, carnatic rhythm, this is hard to do in a DAW or engraving software, hard to express, even harder to program in a DAW*
-2. DAWs are built to facilitate certian kinds of common rhythmic subdivision: mostly duple (splitting in halfs) and triple (splitting into thirds). For what is sometimes reffered to as "irregular" division, division of a beat into some number of subdivisions or tuplets
-3. sometimes with a further, nested, subdivision or *tuplet*, no simple solution currently exists.
-4. [fragmentary rhythms](https://www.instagram.com/p/CFxKMSMAS22/?utm_source=ig_web_copy_link) without changing tempo and loops composed of such rhythms have heretofore been impossible
+However, the solution is not to click on the title bar of the Nestup device, because in that case a typed "0" will turn off the Nestup device itself. Our recommendation is to click in the background of the Nestup patch (for example, near the words "Clip length") before typing in the code box. 
