@@ -46,8 +46,6 @@ The Nestup language is simple in that it ignores many of these conventions. That
 
 ![5 against 4 eighth notes, followed by two quarter notes](img/ex-5-4.png "Figure 1")
 
-*Figure 1*
-
 In the above figure, we see a measure of common time, where the first two beats of the measure contain 5 eighth notes in the space of 4 eighth notes, and the second half of the measure contains a quarter note on each beat.
 
 This could be rendered in multiple ways in Nestup, depending on the user's preference. One rendering of this rhythm could be:
@@ -148,38 +146,44 @@ would generate a container of size two with two child containers, followed by a 
 
 In this way, Nestup facilitates the creation of looping clips with fragmentary meters in DAWs such as Ableton Live. Note that in the figure above, the end point of the loop is off of Ableton's "grid."
 
-Note: if you wish to scale a container and want to maintain its flexible size, simply writing a comma `,` followed by the desired ratio will add a container scale while maintaining the container's flexibility. For example, `[,8/3[][]]`. 
+Note: if you wish to scale a container and want to maintain its flexible size, simply writing a comma `,` followed by the desired ratio will add a container scale while maintaining the container's flexibility. For example, `[,8/3 [] []]`. 
 
 This would be a container of size 2, because it is a parent container with children whose sizes sum to 2. That size is then multiplied by 8/3 to produce its final size.
 
 
 ### The Subdivider
 
-A positive integer wrapped in curly braces `{}` evenly divides a container into that many subdivisions. For example, `[4]{3}` might be rendered in conventional western musical notation as:
+A positive integer wrapped in curly braces `{}` evenly divides a container into that many subdivisions. For example, `[4] {3}` might be rendered in conventional western musical notation as:
 
 ![a half-note triplet](img/ex-3.png "Figure 10")
 
-In the same way, `[4]{1}` gives us:
+In the same way, `[4] {1}` gives us:
 
 ![a whole note](img/ex-1.png "Figure 11")
 
-And `[4]{13}` gives us:
+And `[4] {13}` gives us:
 
 ![a 13-let](img/ex-13.png "Figure 12")
 
-*Warning:* A container can only be subdivided with the subdivider if it has no child containers. For example, the expression `[[]]{3}` **is not valid.**
+*Warning:* A container can only be subdivided with the subdivider if it has no child containers. For example, the expression `[[]] {3}` **is not valid.**
 
-If you are subdividing a container of size 1 with no sibling containers, you can leave off the preceding `[]`. For example, `[]{5}` and `{5}` are equivalent. However, `{5}{5}` or `{5}[]{4}` **are not valid.**
+If you are subdividing a container of size 1 with no sibling containers, you can leave off the preceding `[]`. For example, `[] {5}` and `{5}` are equivalent. However, `{5} {5}` or `{5} [] {4}` **are not valid.**
 
 #### Ranged Containers
 
-Once you’ve subdivided a container, you can place more containers within those subdivisions. To place one of these ranged containers, you first specify a **range start** with `()`, followed by the container. For example, to place the container `[[2][1]]` on the first beat of a container subdivided into 3 parts, you would write `[]{3(1) [[2][1]] }`.
+Once you’ve subdivided a container, you can place more containers within those subdivisions. To place one of these ranged containers, you first specify a **range** for the container. The range goes inside `()` and includes a **start** and a **length.** The range length is used to stretch that ranged container across multiple subdivisions, but defaults to 1 subdivision if not otherwise specified. 
+
+For example, to place the container `[[2] [1]]` on the first beat of a container subdivided into 3 parts, you would write:
+```
+[] {3 (1) [[2] [1]]}
+```
 ![ranged container](img/pno-roll-7.png "Figure 13")
 
-You can stretch that ranged container across multiple subdivisions by adding a **range length** to the range expression. For example, `[]{3 (1, 2) [[2][1]]}` would stretch the container across two subdivisions.
+`[]{3 (1, 2) [[2] [1]]}` would stretch the container across two subdivisions. 
+
 ![range, length](img/pno-roll-8.png "Figure 14")
 
-*Warning:* The size of the ranged container will always be determined by its range expression. For this reason, you can not give a ranged container a fixed size: `{3(1)[2]}` **is not valid**. Additionally, a ranged container cannot have siblings: `{3(1)[][]}` **is not valid**, though it can have children, as demonstrated in the examples above.
+*Warning:* The size of the ranged container will always be determined by its range expression. For this reason, you can not give a ranged container a fixed size: `{3 (1) [2]}` **is not valid**. Additionally, a ranged container cannot have siblings: `{3 (1) [] []}` **is not valid**, though it can have children, as demonstrated in the examples above.
 
 ### Ties and Rests
 
@@ -190,7 +194,7 @@ Nestup has two additional features to help you generate rhythms: the ability to 
 In Nestup, ties are written using the underscore `_` and connect sibling containers. When used, the subdivision before and after are combined. 
 
 For example:
-`[3]{5}_[]{3}` will give us:
+`[3] {5} _ [] {3}` will give us:
 
 ![tie](img/pno-roll-9.png "Figure 15")
 
