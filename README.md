@@ -9,7 +9,7 @@ It's Nestup! The domain specific language for describing and generating nested t
 | `[4]`      | One event, 4 beats long | ![](./img/cheat-01.png)
 | `[[2] [2]]`   | Two events, each 2 beats long | ![](./img/cheat-02.png)
 | `[3 [2] [3]]` | Two events, squeezed into 3 beats. The first will have length `2/5` of 3 beats, and the second will have length `3/5` of 3 beats. | ![](./img/cheat-03.png)
-|`[[][]][2,3/7[][]]`|Four events, with the second two events scaled at a ratio of `3:7` to the first two. |![](./img/cheat-scale2.png)
+|`[[] []] [2, 3/7 [] []]`|Four events, with the second two events scaled at a ratio of `3:7` to the first two. |![](./img/cheat-scale2.png)
 | `[4] {3}` | Three events, evenly spaced over 4 beats (aka a triplet over 4 beats) | ![](./img/cheat-04.png)
 | `[4] {3} [4] {5}` | A 3:4 triplet followed by a 5:4 quintuplet | ![](./img/cheat-05.png)
 | `[4] {3 (2) {3} }` | A triplet, where the second event has been itself subdivided into a triplet. A total of 5 note events | ![](./img/cheat-06.png)
@@ -30,7 +30,7 @@ to get the repo all set up.
 
 ## Why Nestup?
 
-Most DAWs and other music software are designed to facilitate creating music with rhythmic subdivisions that divide in twos and into threes. However, there are many types of music in the world, such as the tabla rhythms from Indian classical music, rhythms by jazz musicians such as Tigran Hamasyan, drawing from Armenian folk traditions, or the nested tuplets common to "New Complexity" composers like Brian Ferneyhough, that do not divide solely into twos and threes. Most of these rhythms are rather difficult to program in any DAW.
+Most DAWs and other music software are designed to facilitate creating music with rhythmic subdivisions that divide in twos and into threes. However, there are many types of music in the world, such as tabla rhythms from Indian classical music, rhythms by musicians such as Tigran Hamasyan, drawing from Armenian folk traditions, or the nested tuplets common to "New Complexity" composers like Brian Ferneyhough, that do not divide solely into twos and threes. Most of these rhythms are rather difficult to program in any DAW.
 
 In addition, DAWs that employ looping clips, for example Ableton Live or Logic Pro, facilitate the creation of clips that are defined by a number of 16th note subdivisions, making a loping clip of a "[fragmentary rhythm](https://www.instagram.com/p/CFxKMSMAS22/?utm_source=ig_web_copy_link)" very difficult to create.
 
@@ -53,21 +53,21 @@ In the above figure, we see a measure of common time, where the first two beats 
 This could be rendered in multiple ways in Nestup, depending on the user's preference. One rendering of this rhythm could be:
 ```
 [4
-    []{5}
-    []{2}
+    [] {5}
+    [] {2}
 ]
 ```
 Another way to write it could be:
 
 ```
-[4]{4
-    (1, 2)[]{5}
+[4] {4
+      (1, 2) [] {5}
 }
 ```
 
-Nestup doesn't have an explicit notion of beats or time signatures, it simply divides containers (of time) and generates events. So, Nestup could render this rhythm in at least these two ways. To understand what these examples are doing, let's look at how Nestup works.
+Nestup doesn't have an explicit notion of beats or time signatures, it simply divides containers (of time) and generates events. So, Nestup could render this rhythm in at least these two ways. Let's take a closer look at what these examples are doing.
 
-## How Nestup Works
+## What These Examples Are Doing
 
 1. Here, we specify a **container** `[]`, with a **size** of 4, with `[4]`.
 
@@ -81,14 +81,14 @@ In our second example, we describe the rhythm a little differently.
 
 2. This container is subdivided into 4 subdivisions with `{4}`.
 
-3. A child container can be placed within those subdivisions, by specifying that container's **range:** where it should start, and how long it should continue. In the second example, the ranged container is placed on the first subdivision, stretched across two subdivisions, with `(1,2)[]`.
+3. A child container can be placed within those subdivisions, by specifying that container's **range:** where it should start, and how long it should continue. In the second example, the ranged container is placed on the first subdivision, stretched across two subdivisions, with `(1,2) []`.
 
 4. Finally, that ranged container is subdivided into 5 subdivisions with `{5}`.
 
 Both of these examples gives us the rhythm from Figure 1: five evenly spaced events followed by two evenly spaced events that take up the same amount of time as the first five.
 
 
-## The Simplest Nestup Expression
+## How Nestup Works
 
 We can now take a step back and describe the Nestup language systematically, starting from its most simple expression.
 
@@ -104,11 +104,11 @@ Our `[4]` gives us a rhythm like:
 ![a whole note](img/ex-1.png "Figure 2") or, in the piano roll, ![a whole note in piano roll](img/pno-roll-1.png "Figure 3") 
 
 #### Flexible Container
-A container can be divided into child containers, for example, `[[2][2]]` will divide the container into two. Those child containers have a size of 2, and since the parent container has been given no explicit size, it is **flexible**, and inherits its size from the sum of its children's sizes—in this case, a size of 4. 
+A container can be divided into child containers, for example, `[[2] [2]]` will divide the container into two. Those child containers have a size of 2, and since the parent container has been given no explicit size, it is **flexible**, and inherits its size from the sum of its children's sizes—in this case, a size of 4. 
 
 ![two half notes in piano roll](img/pno-roll-2.png "Figure 4") 
 
-To give another example, `[[3][2]]` will give us a container of size 5, for example, a five beat long rhythm, with a note spanning three beats and a note spanning two beats, like:
+To give another example, `[[3] [2]]` will give us a container of size 5, for example, a five beat long rhythm, with a note spanning three beats and a note spanning two beats, like:
 
 ![[[3][2]] in piano roll](img/pno-roll-3.png "Figure 5") 
 
@@ -116,19 +116,21 @@ To give another example, `[[3][2]]` will give us a container of size 5, for exam
 
 What if you wanted to specify the size of the parent container to be 4, but keep the 3:2 porportion of the child containers? 
 
-You can do this by specifying a size of the parent container, making it a **fixed container**, as with `[4[3][2]]`
-
+You can do this by specifying a size of the parent container, making it a **fixed container**, as with
+```
+[4[3] [2]]
+```
 ![[4[3][2]] in piano roll](img/pno-roll-4.png "Figure 6") 
 
 With a combination of fixed and flexible parent and child containers, we can generate a wide variety of rhythms.
 ```
-[2[5][2]]
-[[][2]]
-[1[[][]][]]
+[2[5] [2]]
+[[] [2]]
+[1[[] []] []]
 
-[5[2[5][2]]
-[[][2]]
-[1[[][]][]]]
+[5[2[5] [2]]
+[[] [2]]
+[1[[] []] []]]
 ```
 ![container example in piano roll](img/pno-roll-5.png "Figure 7") 
 or 
@@ -136,7 +138,11 @@ or
 
 #### Container Scale
 
-You can also **scale** the size of a container by a ratio of two positive integers. It cannot be a decimal number. For example, `[2[][]][2, 3/5[][]]`, would generate a container of size two with two child containers, followed by a second container of size two with two child containers, this second one being 3/5 the size of the first.
+You can also **scale** the size of a container by a ratio of two positive integers. It cannot be a decimal number. For example,
+```
+[2[] []] [2, 3/5[] []]
+```
+would generate a container of size two with two child containers, followed by a second container of size two with two child containers, this second one being 3/5 the size of the first.
 
 ![container scale in piano roll](img/pno-roll-6.png "Figure 9") 
 
