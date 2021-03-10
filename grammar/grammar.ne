@@ -14,7 +14,9 @@ const lexer = moo.compile({
   ls: /\[/,
   rs: /\]/,
   slash: /\//,
-  underscore: /_/
+  underscore: /_/,
+  colon: /:/,
+  prime: /'/
 });
 %}
 
@@ -57,22 +59,26 @@ container ->
 # All containers must have either subcontainers or subdivisions, but not both
 sized_container ->
 	  sized_contents_with_subcontainers {% d => d[0] %}
-	| sized_contents _:? subdivisions {% d => { return { dimension: d[0].dimension, subdivisions: d[2] }} %}
+	| sized_contents _:? subdivisions {% d => { return { dimension: d[0].dimension, empty: d[0].empty, subdivisions: d[2] }} %}
+	| sized_contents {% d => d[0] %}
 
 unsized_container ->
 	  unsized_contents_with_subcontainers {% d => d[0] %}
-	| unsized_contents _:? subdivisions {% d => { return { dimension: d[0].dimension, subdivisions: d[2] }} %}
+	| unsized_contents _:? subdivisions {% d => { return { dimension: d[0].dimension, empty: d[0].empty, subdivisions: d[2] }} %}
 	| unsized_contents {% d => d[0] %}
 
 # Sized contents have explicit dimension
-sized_contents -> %ls _:? dimension _:? %rs {% d => { return { dimension: d[2] }} %}
+sized_contents ->
+	  %ls _:? dimension _:? %rs {% d => { return { dimension: d[2] }} %}
+	| %ls _:? %prime _:? dimension _:? %rs {% d => { return { dimension: d[4], empty: true }} %}
 
 sized_contents_with_subcontainers ->
-	  %ls _:? dimension container_list_or_subdivisions:? _:? %rs {% d => { return { dimension: d[2], contents: d[3] }} %}
+	  %ls _:? dimension container_list_or_subdivisions _:? %rs {% d => { return { dimension: d[2], contents: d[3] }} %}
 
 # Unsized contents have no explicit dimension, only contents
 unsized_contents ->
-	%ls _:? %rs {% d => { return { dimension: undefined, subdivisions: {division: 1} }} %}
+	  %ls _:? %rs {% d => { return { dimension: undefined, subdivisions: {division: 1} }} %}
+	| %ls _:? %prime _:? %rs {% d => { return { dimension: undefined, empty: true, subdivisions: {division: 1} }} %}
 
 unsized_contents_with_subcontainers ->
 	%ls container_list_or_subdivisions _:? %rs {% d => { return { dimension: { proportionality: "+", scale: 1 }, contents: d[1] }} %}
@@ -101,8 +107,8 @@ ranged_container ->
 
 # A range is an index followed by an optional length (defaults to 1)
 range ->
-	  %lp _:? integer _:? %rp {% d => {return { index: d[2], length: 1 }} %}
-	| %lp _:? integer _:? %comma _:? integer _:? %rp {% d => {return { index: d[2], length: d[6] }} %}
+	  integer {% d => {return { index: d[0], length: 1 }} %}
+	| integer _:? %colon _:? integer {% d => {return { index: d[0], length: d[4] }} %}
 
 # A rational number is two integers separated by a slash
 ratio ->

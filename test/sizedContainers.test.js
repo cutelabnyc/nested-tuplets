@@ -43,7 +43,7 @@ describe("Sized Containers", () => {
 	});
 
 	it("handles onset paths", () => {
-		const input = `{2 (2, 1) {2 (2, 1) {2}}}`;
+		const input = `{2 2:1 {2 2:1 {2}}}`;
 		const parseTree = new RhythmParser().parse(input);
 
 		expect(parseTree).to.be.an.instanceOf(Array).with.length(1);
@@ -75,7 +75,7 @@ describe("Sized Containers", () => {
 	});
 
 	it("handles ties between ranged containers", () => {
-		const input = `[] {2 (1) [] _ (2) []}`;
+		const input = `[] {2 1 [] _ 2 []}`;
 		const parseTree = new RhythmParser().parse(input);
 
 		expect(parseTree).to.be.an.instanceOf(Array).with.length(1);

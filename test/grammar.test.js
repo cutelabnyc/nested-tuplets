@@ -43,7 +43,7 @@ describe("Grammar: Generating parse trees", () => {
 
 	it("parses a nested rhythm", () => {
 		const input = `
-			{3 (1, 2) {3}}
+			{3 1:2 {3}}
 		`;
 		const parser = new RhythmParser();
 		const result = parser.parse(input);
@@ -74,8 +74,8 @@ describe("Grammar: Generating parse trees", () => {
 	it("handles multiple ranged containers", () => {
 		const input = `
 			{2
-				(1) {3}
-				(2) {4}
+				1 {3}
+				2 {4}
 			}
 		`;
 
@@ -178,8 +178,8 @@ describe("Grammar: Generating parse trees", () => {
 	it("handles ties between ranged containers", () => {
 		const input = `
 			[] {3
-				(1) [] _
-				(1) []
+				1 [] _
+				2 []
 			}
 		`;
 

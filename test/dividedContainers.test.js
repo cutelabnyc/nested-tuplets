@@ -21,7 +21,7 @@ describe("Subdivided Containers", () => {
 
 	it("parses a nested tuplet", () => {
 		const input = `{3
-			(1, 1) {3}
+			1:1 {3}
 		}`;
 		const parseTree = new RhythmParser().parse(input);
 
@@ -50,7 +50,7 @@ describe("Subdivided Containers", () => {
 	});
 
 	it("handles subtuples with rests", () => {
-		const input = `[4] {3 (2, 1) {0} }`;
+		const input = `[4] {3 2:1 {0} }`;
 		const parseTree = new RhythmParser().parse(input);
 
 		const containerDescription = parseTree[0];
@@ -61,7 +61,7 @@ describe("Subdivided Containers", () => {
 	});
 
 	it("handles overlapped rests", () => {
-		const input = `[4] {3 (1, 3) {0} (2, 1) {1} }`;
+		const input = `[4] {3 1:3 {0} 2:1 {1} }`;
 		const parseTree = new RhythmParser().parse(input);
 
 		const containerDescription = parseTree[0];

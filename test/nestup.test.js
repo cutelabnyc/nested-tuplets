@@ -83,7 +83,7 @@ describe("Nestup", () => {
 	});
 
 	it("handles rests", () => {
-		const input = `[4] {3 (2, 1) {0} }`;
+		const input = `[4] {3 2:1 {0} }`;
 		const parseTree = new RhythmParser().parse(input);
 		const nestup = new Nestup(parseTree);
 
@@ -101,7 +101,7 @@ describe("Nestup", () => {
 	});
 
 	it("generates midi-like events", () => {
-		const input = `[4] {4 (3, 1) {0} }`;
+		const input = `[4] {4 3:1 {0} }`;
 		const parseTree = new RhythmParser().parse(input);
 		const nestup = new Nestup(parseTree);
 		const midiLikeEvents = nestup.onOffEvents(100);
@@ -124,8 +124,8 @@ describe("Nestup", () => {
 
 	it("handles funky on/off overlap", () => {
 		const input = `[4] {4
-			(2, 3) {1}
-			(3, 1) {0}
+			2:3 {1}
+			3 {0}
 		}`;
 		const parseTree = new RhythmParser().parse(input);
 		const nestup = new Nestup(parseTree);

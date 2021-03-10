@@ -40,6 +40,7 @@ module.exports = class Container {
 
 		this._index = index;
 		this._tie = !!containerDescription.tie;
+		this._empty = !!containerDescription.empty;
 	}
 
 	get proportionality() {
@@ -66,14 +67,14 @@ module.exports = class Container {
 		let out = [];
 
 		// Special case: if the division is one, we encode a rest.
-		if (this._division === 0) {
+		if (this._empty || this._division === 0) {
 			out.push(new Onset(
 				new Fraction(0),
 				Onset.type.OFF,
 				(this._index !== undefined) ? `${this._index}` : undefined
 			));
 
-			return out;
+			if (this._division === 0) return out;
 		}
 
 		if (this._contents) {
@@ -101,14 +102,16 @@ module.exports = class Container {
 		} else {
 
 			// Add an onset for each position that doesn't intersect a subtuplet
-			for (let i = 0; i < this._division; i++) {
-				let intersector = this._ranges.findIndex(({ range }) => range.intersects(i + 1));
-				if (intersector === -1)
-					out.push(new Onset(
-						new Fraction(i, this._division),
-						Onset.type.ON,
-						this._index ? `${this._index}` : undefined
-					));
+			if (!this._empty) {
+				for (let i = 0; i < this._division; i++) {
+					let intersector = this._ranges.findIndex(({ range }) => range.intersects(i + 1));
+					if (intersector === -1)
+						out.push(new Onset(
+							new Fraction(i, this._division),
+							Onset.type.ON,
+							this._index ? `${this._index}` : undefined
+						));
+				}
 			}
 
 			// Add onsets from all the other subtuplets
@@ -139,12 +142,14 @@ module.exports = class Container {
 			});
 		}
 
-		// Add an off event at the end
-		out.push(new Onset(
-			new Fraction(1.0),
-			Onset.type.OFF,
-			this._index ? `${this._index}` : undefined
-		));;
+		// Add an off event at the end, if there are any on events
+		if (out.findIndex(o => o.type === Onset.type.ON) !== -1) {
+			out.push(new Onset(
+				new Fraction(1.0),
+				Onset.type.OFF,
+				this._index ? `${this._index}` : undefined
+			));
+		}
 
 		// Filter duplicates
 		let i = 0;
