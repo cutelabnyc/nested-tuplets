@@ -16,7 +16,9 @@ const lexer = moo.compile({
   slash: /\//,
   underscore: /_/,
   colon: /:/,
-  prime: /'/
+  prime: /'/,
+  gt: />/,
+  lt: /</,
 });
 %}
 
@@ -93,6 +95,12 @@ dimension ->
 subdivisions ->
 	  %lb ranged_container_list:? _:? %rb {% d => {return { division: 1, ranges: d[1] }} %}
 	| %lb _:? integer ranged_container_list:? _:? %rb {% d => {return { division: d[2], ranges: d[3] }} %}
+	| %lb _:? rotation ranged_container_list:? _:? %rb {% d => {return { division: 1, rotation: d[2], ranges: d[3] }} %}
+	| %lb _:? integer _:? rotation ranged_container_list:? _:? %rb {% d => {return { division: d[2], rotation: d[4], ranges: d[5] }} %}
+
+rotation ->
+	  %lt _:? ratio {% d => d[2].mul(-1) %}
+	| %gt _:? ratio {% d => d[2] %}
 
 # Ranged containers can also be tied
 ranged_container_list ->

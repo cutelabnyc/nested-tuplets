@@ -1,6 +1,6 @@
 {
   "name": "@cutelab/nestup",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "description": "Parse a special hierarchical tuplet syntax, get a bunch of midi notes",
   "main": "index.js",
   "contributors": [
@@ -21,6 +21,7 @@
   },
   "scripts": {
     "pretest": "yarn run build-grammar",
+    "prepublishOnly": "yarn run build",
     "build": "yarn run build-grammar && yarn run build-pack",
     "build-grammar": "mkdir -p src/build && nearleyc grammar/grammar.ne --out ./src/build/grammar.js",
     "build-pack": "webpack",

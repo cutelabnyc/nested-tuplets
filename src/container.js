@@ -23,6 +23,7 @@ module.exports = class Container {
 			this._contents = containerDescription.contents.map((c, idx) => new Container(c, idx + 1));
 		} else if (containerDescription.subdivisions){
 			this._division = containerDescription.subdivisions.division;
+			this._rotation = containerDescription.subdivisions.rotation;
 			if (containerDescription.subdivisions.ranges) {
 				this._ranges = containerDescription.subdivisions.ranges.map(({range, container}, idx) => {
 					return {
@@ -134,6 +135,26 @@ module.exports = class Container {
 					}
 				});
 				lastContainerTied = st.tie;
+			});
+
+			// sort
+			out = out.sort((oa, ob) => {
+				return oa.time.compare(ob.time);
+			});
+		}
+
+		// Rotate the onsets if there is a rotation
+		if (!!this._rotation) {
+			let normalizedRotation = this._rotation;
+			if (normalizedRotation.compare(0) < 0) {
+				normalizedRotation = normalizedRotation.mod(this._division).add(this._division).mod(this._division);
+			} else {
+				normalizedRotation = normalizedRotation.mod(this._division);
+			}
+			normalizedRotation = normalizedRotation.mul(new Fraction(1, this._division));
+
+			out.forEach(o => {
+				o._time = o._time.add(normalizedRotation).mod(1);
 			});
 
 			// sort
