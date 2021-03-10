@@ -1,6 +1,6 @@
 {
   "name": "@cutelab/nestup",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "Parse a special hierarchical tuplet syntax, get a bunch of midi notes",
   "main": "index.js",
   "contributors": [
