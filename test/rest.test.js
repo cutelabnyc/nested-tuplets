@@ -102,4 +102,22 @@ describe("Rests", () => {
 		expect(midiLikeEvents[0].time).to.equal(50);
 		expect(midiLikeEvents[1].time).to.equal(60);
 	});
+
+	it("handles another easy rest thing", () => {
+		const input = `['4] {4 2 [] 4 []}`;
+		const parseTree = new RhythmParser().parse(input);
+		const nestup = new Nestup(parseTree);
+		const midiLikeEvents = nestup.onOffEvents(100);
+
+		expect(nestup.beatLength).to.equal(4);
+		expect(midiLikeEvents).to.be.an.instanceOf(Array).with.length(4);
+		expect(midiLikeEvents[0].on).to.be.true;
+		expect(midiLikeEvents[1].on).to.be.false;
+		expect(midiLikeEvents[2].on).to.be.true;
+		expect(midiLikeEvents[3].on).to.be.false;
+		expect(midiLikeEvents[0].time).to.equal(25);
+		expect(midiLikeEvents[1].time).to.equal(50);
+		expect(midiLikeEvents[2].time).to.equal(75);
+		expect(midiLikeEvents[3].time).to.equal(100);
+	});
 });
