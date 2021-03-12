@@ -93,8 +93,7 @@ dimension ->
 
 # Subdivisions is just a subdivision number followed by a list of ranged containers
 subdivisions ->
-	  %lb ranged_container_list:? _:? %rb {% d => {return { division: 1, ranges: d[1] }} %}
-	| %lb _:? integer ranged_container_list:? _:? %rb {% d => {return { division: d[2], ranges: d[3] }} %}
+	  %lb _:? integer ranged_container_list:? _:? %rb {% d => {return { division: d[2], ranges: d[3] }} %}
 	| %lb _:? rotation ranged_container_list:? _:? %rb {% d => {return { division: 1, rotation: d[2], ranges: d[3] }} %}
 	| %lb _:? integer _:? rotation ranged_container_list:? _:? %rb {% d => {return { division: d[2], rotation: d[4], ranges: d[5] }} %}
 
@@ -112,6 +111,7 @@ ranged_container_list ->
 ranged_container ->
 	  _:? range _:? unsized_container {% d => {return { range: d[1], container: d[3] }} %}
 	| _:? range _:? subdivisions {% d => {return { range: d[1], container: { dimension: undefined, subdivisions: d[3] } }} %}
+	| _:? range {% d => {return { range: d[1], container: { dimension: undefined, subdivisions: {division: 1} } }}%}
 
 # A range is an index followed by an optional length (defaults to 1)
 range ->

@@ -173,6 +173,33 @@ describe("Nestup", () => {
 		expect(midiLikeEvents[3].time).to.equal(100);
 	});
 
+	it("handles quick ranges", () => {
+		const input = `['4] {10
+			1
+			4
+			6:2
+		}
+		`;
+
+		const parseTree = new RhythmParser().parse(input);
+		const nestup = new Nestup(parseTree);
+
+		const midiLikeEvents = nestup.onOffEvents(100);
+		expect(midiLikeEvents).to.be.an.instanceOf(Array).with.length(6);
+		expect(midiLikeEvents[0].on).to.be.true;
+		expect(midiLikeEvents[1].on).to.be.false;
+		expect(midiLikeEvents[2].on).to.be.true;
+		expect(midiLikeEvents[3].on).to.be.false;
+		expect(midiLikeEvents[4].on).to.be.true;
+		expect(midiLikeEvents[5].on).to.be.false;
+		expect(midiLikeEvents[0].time).to.equal(0);
+		expect(midiLikeEvents[1].time).to.equal(10);
+		expect(midiLikeEvents[2].time).to.equal(30);
+		expect(midiLikeEvents[3].time).to.equal(40);
+		expect(midiLikeEvents[4].time).to.equal(50);
+		expect(midiLikeEvents[5].time).to.equal(70);
+	});
+
 	it("rejects a container that is both a parent as well as subdivided", () => {
 		const input = `
 			[ [] [] ] {2}
