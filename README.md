@@ -12,11 +12,13 @@ It's Nestup! The domain specific language for describing and generating nested t
 |`[[] []] [2, 3/7 [] []]`|Four events, with the second two events scaled at a ratio of `3:7` to the first two. |![](./img/cheat-scale2.png)
 | `[4] {3}` | Three events, evenly spaced over 4 beats (aka a triplet over 4 beats) | ![](./img/cheat-04.png)
 | `[4] {3} [4] {5}` | A 3:4 triplet followed by a 5:4 quintuplet | ![](./img/cheat-05.png)
-| `[4] {3 (2) {3} }` | A triplet, where the second event has been itself subdivided into a triplet. A total of 5 note events | ![](./img/cheat-06.png)
-| `[4] {3 (2, 2) {5} }` | A triplet, where the second and third beat have been replaced with a quintuplet over that same time. A total of 6 events | ![](./img/cheat-07.png) |
-| `[4 [1] [1] {0} [1]]` | Three equally long notes in the space of 4 beats (aka a triplet), where the second note is a rest | ![](./img/cheat-08.png) |
+| `[4] {3 2 {3} }` | A triplet, where the second event has been itself subdivided into a triplet. A total of 5 note events | ![](./img/cheat-06.png)
+| `[4] {3 2:2 {5} }` | A triplet, where the second and third beat have been replaced with a quintuplet over that same time. A total of 6 events | ![](./img/cheat-07.png) |
+| `[4 [1] ['] [1]]` | Three equally long notes in the space of 4 beats (aka a triplet), where the second note is a rest | ![](./img/cheat-08.png) |
 | `[4 [1] [1] _ [1] [1]]` | Four notes in the space of four beats, The second note is tied to the third. | ![](./img/cheat-09.png) |
-| `[4 {5 (2) [] _ (3) [] }]` | Five notes in the space of four beats, where the second note is tied to the third. | ![](./img/cheat-10.png) |
+| `[4 {5 2 [] _ 3 [] }]` | Five notes in the space of four beats, where the second note is tied to the third. | ![](./img/cheat-10.png) |
+| `[3]{3 > 1/2}` | Three notes in the space of three beats, offset by half a beat. | ![](./img/cheat-11.png) |
+| `['4] [2]` | An empty container, four beats long, followed by a note two beats long. | ![](./img/cheat-12.png) |
 
 ## Getting set up
 
@@ -59,7 +61,7 @@ Another way to write it could be:
 
 ```
 [4] {4
-      (1, 2) [] {5}
+      1:2 [] {5}
 }
 ```
 
@@ -79,7 +81,7 @@ In our second example, we describe the rhythm a little differently.
 
 2. This container is subdivided into 4 subdivisions with `{4}`.
 
-3. A child container can be placed within those subdivisions, by specifying that container's **range:** where it should start, and how long it should continue. In the second example, the ranged container is placed on the first subdivision, stretched across two subdivisions, with `(1,2) []`.
+3. A child container can be placed within those subdivisions, by specifying that container's **range**—where it should start, and how long it should continue. In the second example, the ranged container is placed on the first subdivision, stretched across two subdivisions, with `1:2 []`.
 
 4. Finally, that ranged container is subdivided into 5 subdivisions with `{5}`.
 
@@ -171,23 +173,95 @@ If you are subdividing a container of size 1 with no sibling containers, you can
 
 #### Ranged Containers
 
-Once you’ve subdivided a container, you can place more containers within those subdivisions. To place one of these ranged containers, you first specify a **range** for the container. The range goes inside `()` and includes a **start** and a **length.** The range length is used to stretch that ranged container across multiple subdivisions, but defaults to 1 subdivision if not otherwise specified. 
+Once you’ve subdivided a container, you can place more containers within those subdivisions. To place one of these ranged containers, you first specify a **range** for the container. The range includes a **start** and a **length.** The range length, written after the colon `:`, is used to stretch that ranged container across multiple subdivisions, but defaults to 1 subdivision if not otherwise specified. 
 
 For example, to place the container `[[2] [1]]` on the first beat of a container subdivided into 3 parts, you would write:
 ```
-[] {3 (1) [[2] [1]]}
+[] {3 1 [[2] [1]]}
 ```
 ![ranged container](img/pno-roll-7.png "Figure 13")
 
-`[]{3 (1, 2) [[2] [1]]}` would stretch the container across two subdivisions. 
+`[]{3 1:2 [[2] [1]]}` would stretch the container across two subdivisions. 
 
 ![range, length](img/pno-roll-8.png "Figure 14")
 
-*Warning:* The size of the ranged container will always be determined by its range expression. For this reason, you can not give a ranged container a fixed size: `{3 (1) [2]}` **is not valid**. Additionally, a ranged container cannot have siblings: `{3 (1) [] []}` **is not valid**, though it can have children, as demonstrated in the examples above.
+#### Ranged Container Shorthand
 
-### Ties and Rests
+If you want to place a ranged container of size 1, you can simply declare the range start, or the range start and length, and the ranged container of size 1 will be implied.
 
-Nestup has two additional features to help you generate rhythms: the ability to combine two adjascent containers, in a manner similar to a "tie" in western classical music notation, and the ability to insert silence over a container's duration, a "rest."
+For example, the following two expressions are equivalent:
+
+```
+[]{8
+  1 []
+  2 []
+  3 []
+  4:5 []
+}
+```
+and
+```
+[]{8
+  1
+  2
+  3
+  4:5
+}
+```
+![range shorthand](img/pno-shorthand.png "Figure 15")
+
+*Warning:* The size of the ranged container will always be determined by its range expression. For this reason, you can not give a ranged container a fixed size: `{3 1 [2]}` **is not valid**. Additionally, a ranged container cannot have siblings: `{3 1 [] []}` **is not valid**, though it can have children, as demonstrated in the examples above.
+
+### Empty Containers
+
+Up until this point, we have described containers full of rhythmic events. What if we want to describe a period of time that is empty?
+
+```
+['4]
+```
+The expression above describes a container of size 4 which is empty. We can see such an empty container in context below:
+
+```
+[4] {3}
+['4]
+[2]
+```
+![empty](img/pno-empty-1.png "Figure 16")
+
+The **Empty Container** shares many characteristics with its non-empty counterpart: it has a container size, it can have a scale expressed as a ratio of two positive integers, and it can be subdivided using `{}` expressions. 
+
+However, the empty container cannot have children. Why? Because the child containers would fill the empty container and it would no longer be empty. Therefore, if you write `['4[2]['3]]`, this will throw an error. It would be better to write `[4[2]['3]]`.
+
+It is perfectly possible to add rhythmic events into an empty container, however. You simply need to use the subdivider `{}`. Take for instance:
+
+```
+['4]{16
+  1 {2}
+  8 {3}
+  16
+}
+```
+![empty 2](img/pno-empty-2.png "Figure 17")
+
+#### Rests
+
+A common use for an empty container is for adding rests.
+
+For example,
+```
+[]
+[']
+[3] {5
+  2 [']
+  4:2 [']
+}
+```
+![rests](img/pno-roll-10.png "Figure 18") 
+
+### Ties and Rotations
+
+Nestup has two additional features to help you generate rhythms: the ability to combine two adjascent containers, in a manner similar to a "tie" in western classical music notation, and the ability to "rotate" rhythmic events forward or backward over a subdivided container's rhythmic grid.
+
 
 #### Ties
 
@@ -196,28 +270,35 @@ In Nestup, ties are written using the underscore `_` and connect sibling contain
 For example:
 `[3] {5} _ [] {3}` will give us:
 
-![tie](img/pno-roll-9.png "Figure 15")
+![tie](img/pno-roll-9.png "Figure 19")
 
-#### Rests
+#### Rotation
 
-In Nestup, rests are written using a subdivider with a value of 0, `{0}`.
+Sometimes you might want to add subdivisions but change exactly where in the container the rhythmic events described by those subdivisions might fall. For example, to place a snare drum on beats "2" and "4" of a 4/4 measure, you might write the following expression:
 
-For example,
 ```
-[]
-[] {0}
-[3] {5
-  (2) {0}
-  (4, 2) {0}
+['4]{4
+  2
+  4
 }
 ```
-![rests](img/pno-roll-10.png "Figure 16")
+With **Rotation**, you could achieve a snare drum hitting on "2" and "4" with the following expression:
+```
+[4]{2 > 1/2}
+```
+In this second example, we've made two subdivisions (rather than four) of the parent container, and then used the character `>` to offset the start of those subdivisions by 1/2 of one subdivision.
+
+It is also possible to offset a rhythm backwards with `<`, by any ratio of one subdivision. For example:
+
+```
+[4]{3}
+[4]{3 < 1/3}
+```
+![rotate](img/pno-rotate.png "Figure 20")
+
+As you might have noticed, there is something worth a mention here, which is that rotated events are rendered in MIDI with their original duration, are cut off at the end of their parent container, and will not write the portion of a note that overlaps with the beginning of the parent container.
 
 ______
-## Ableton-specific notes
+## Ableton-specific documentation
 
-If you are using the Nestup Max For Live device to parse your Nestup expressions, these notes are for you.
-
-*Warning:* There is a known issue with Max For Live devices where if the device is not in focus (with the title bar of the device illuminated, for example), commands, such as ⌘+C or ⌘+V on Mac, will apply to the Live Session and not to the device, such as Nestup. You may be able to type into the Nestup code box, but this issue will persist. In addition, the character "0" will deactivate whichever device or track *is* in focus.
-
-However, the solution is not to click on the title bar of the Nestup device, because in that case a typed "0" will turn off the Nestup device itself. Our recommendation is to click in the background of the Nestup patch (for example, near the words "Clip length") before typing in the code box. 
+If you are using the Nestup Max For Live device to parse your Nestup expressions, please visit the Nestup Max for Live Device Reference [link forthcoming]. 
