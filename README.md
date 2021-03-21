@@ -17,7 +17,7 @@ It's Nestup! The domain specific language for describing and generating nested t
 | `[4 [1] ['] [1]]` | Three equally long notes in the space of 4 beats (aka a triplet), where the second note is a rest | ![](./img/cheat-08.png) |
 | `[4 [1] [1] _ [1] [1]]` | Four notes in the space of four beats, The second note is tied to the third. | ![](./img/cheat-09.png) |
 | `[4 {5 2 [] _ 3 [] }]` | Five notes in the space of four beats, where the second note is tied to the third. | ![](./img/cheat-10.png) |
-| `[3]{3 > 1/2}` | Three notes in the space of three beats, offset by half a beat. | ![](./img/cheat-11.png) |
+| `[3] {3 > 1/2}` | Three notes in the space of three beats, offset by half a beat. | ![](./img/cheat-11.png) |
 | `['4] [2]` | An empty container, four beats long, followed by a note two beats long. | ![](./img/cheat-12.png) |
 
 ## Getting set up
@@ -118,7 +118,7 @@ What if you wanted to specify the size of the parent container to be 4, but keep
 
 You can do this by specifying a size of the parent container, making it a **fixed container**, as with
 ```
-[4[3] [2]]
+[4 [3] [2]]
 ```
 ![[4[3][2]] in piano roll](img/pno-roll-4.png "Figure 6") 
 
@@ -140,7 +140,7 @@ or
 
 You can also **scale** the size of a container by a ratio of two positive integers. It cannot be a decimal number. For example,
 ```
-[2[] []] [2, 3/5[] []]
+[2 [] []] [2, 3/5[] []]
 ```
 would generate a container of size two with two child containers, followed by a second container of size two with two child containers, this second one being 3/5 the size of the first.
 
@@ -181,7 +181,7 @@ For example, to place the container `[[2] [1]]` on the first beat of a container
 ```
 ![ranged container](img/pno-roll-7.png "Figure 13")
 
-`[]{3 1:2 [[2] [1]]}` would stretch the container across two subdivisions. 
+`[] {3 1:2 [[2] [1]]}` would stretch the container across two subdivisions. 
 
 ![range, length](img/pno-roll-8.png "Figure 14")
 
@@ -192,7 +192,7 @@ If you want to place a ranged container of size 1, you can simply declare the ra
 For example, the following two expressions are equivalent:
 
 ```
-[]{8
+[] {8
   1 []
   2 []
   3 []
@@ -201,7 +201,7 @@ For example, the following two expressions are equivalent:
 ```
 and
 ```
-[]{8
+[] {8
   1
   2
   3
@@ -230,12 +230,12 @@ The expression above describes a container of size 4 which is empty. We can see 
 
 The **Empty Container** shares many characteristics with its non-empty counterpart: it has a container size, it can have a scale expressed as a ratio of two positive integers, and it can be subdivided using `{}` expressions. 
 
-However, the empty container cannot have children. Why? Because the child containers would fill the empty container and it would no longer be empty. Therefore, if you write `['4[2]['3]]`, this will throw an error. It would be better to write `[4[2]['3]]`.
+However, the empty container cannot have children. Why? Because the child containers would fill the empty container and it would no longer be empty. Therefore, if you write `['4[2]['3]]`, this will throw a syntax error. The correct form of this expression is `[4[2]['3]]`.
 
 It is perfectly possible to add rhythmic events into an empty container, however. You simply need to use the subdivider `{}`. Take for instance:
 
 ```
-['4]{16
+['4] {16
   1 {2}
   8 {3}
   16
@@ -260,7 +260,7 @@ For example,
 
 ### Ties and Rotations
 
-Nestup has two additional features to help you generate rhythms: the ability to combine two adjascent containers, in a manner similar to a "tie" in western classical music notation, and the ability to "rotate" rhythmic events forward or backward over a subdivided container's rhythmic grid.
+Nestup has two additional features to help you generate rhythms: the ability to combine two adjascent containers, in a manner similar to a "tie" in western classical music notation, and the ability to "rotate" rhythmic events forward or backward in a subdivided container.
 
 
 #### Ties
@@ -274,29 +274,44 @@ For example:
 
 #### Rotation
 
-Sometimes you might want to add subdivisions but change exactly where in the container the rhythmic events described by those subdivisions might fall. For example, to place a snare drum on beats "2" and "4" of a 4/4 measure, you might write the following expression:
+Once you've subdivided a container, you can offset those subdivisions forward or backward using the rotation operators `>` or `<`. The **distance** of a rotation is defined in terms of the number of subdivisions, for example, if you've divided a container into 10 subdivisions, then rotating forward by 5 would have the effect of rotating all subdivisions forward by half of the parent container. 
+
+You can see this demonstrated in the colored visualizer element along the bottom of the Ableton Live Nestup device in the following example:
+
+
+![rotate-first](img/first-rotate.gif "Figure 20")
+
+Rotating in this subdivided container by 10 would have the same effect as not rotating at all. Rotations can be fractions, so you can rotate by 1/2 of 1 subdivision. This can be a nice way to achieve syncopation.
+
+![rotate-diagram](img/rotationDiagram.png "Figure 21")
+
+For example, to place a snare drum on beats "2" and "4" of a 4/4 measure, you might write the following expression:
 
 ```
-['4]{4
+['4] {4
   2
   4
 }
 ```
 With **Rotation**, you could achieve a snare drum hitting on "2" and "4" with the following expression:
 ```
-[4]{2 > 1/2}
+[4] {2 > 1/2}
 ```
 In this second example, we've made two subdivisions (rather than four) of the parent container, and then used the character `>` to offset the start of those subdivisions by 1/2 of one subdivision.
 
 It is also possible to offset a rhythm backwards with `<`, by any ratio of one subdivision. For example:
 
 ```
-[4]{3}
-[4]{3 < 1/3}
+[4] {3}
+[4] {3 < 1/3}
 ```
-![rotate](img/pno-rotate.png "Figure 20")
+![rotate](img/pno-rotate.png "Figure 22")
 
-As you might have noticed, there is something worth a mention here, which is that rotated events are rendered in MIDI with their original duration, are cut off at the end of their parent container, and will not write the portion of a note that overlaps with the beginning of the parent container.
+You can see in the preceeding example that it appears as if there is a rest at the beginning of the second container. This is due to the first event of the subdivided second container being pushed past the beginning of the container and wrapping around the end of that container. 
+
+This wrap-around effect can be seen in the following animation using the Ableton Live Nestup device. As the rotation distance approaches 1 (3/3), the final event in the container gets closer to wrapping around to the beginning of the container.
+
+![rotate-anim](img/rotate.gif "Figure 23")
 
 ______
 ## Ableton-specific documentation
