@@ -32,11 +32,20 @@ to get the repo all set up.
 
 ## Why Nestup?
 
-Most DAWs and other music software are designed to facilitate creating music with rhythmic subdivisions that divide in twos and into threes. However, there are many types of music in the world, such as tabla rhythms from Indian classical music, rhythms by musicians such as Tigran Hamasyan, drawing from Armenian folk traditions, or the nested tuplets common to "New Complexity" composers like Brian Ferneyhough, that do not divide solely into twos and threes. Most of these rhythms are rather difficult to program in any DAW.
+Most DAWs and other music software are designed to facilitate creating music with rhythmic subdivisions that divide in twos and into threes. However, there are many types of music in the world, such as tabla rhythms from Indian classical music, rhythms by musicians such as Tigran Hamasyan, drawing from Armenian folk traditions, or the nested tuplets common to "New Complexity" composers like Brian Ferneyhough, that do not divide solely into twos and threes. Most of these rhythms are rather difficult, or at least tedious, to program in any DAW.
+
+![nested quintuplet](img/nested-tup-ex.png "Figure 1")
+With Nestup, programming such a rhythm can be quite easy:
+```
+[2]{5
+  4:2 {3}
+}
+```
+![nested quintuplet](img/nested-tup-ex2.png "Figure 2")
 
 In addition, DAWs that employ looping clips, for example Ableton Live or Logic Pro, facilitate the creation of clips that are defined by a number of 16th note subdivisions, making a loping clip of a "[fragmentary rhythm](https://www.instagram.com/p/CFxKMSMAS22/?utm_source=ig_web_copy_link)" very difficult to create.
 
-Nestup is designed to be a simple solution for these and other rhythmic needs.
+Nestup is designed to be a simple and expressive solution for these and other rhythmic needs.
 
 ## Dividing Containers
 
@@ -46,7 +55,7 @@ Music notation, and in particular "western" music notation, has its own conventi
 
 The Nestup language is simple in that it ignores many of these conventions. That is, Nestup doesn't care if you are in compound or simple meter, or whether the tuplet is described in sixteenth notes or eighth notes. A musician writing in Nestup simply describes when events (such as musical notes or rhythmic attacks) occur in a given period of time.
 
-![5 against 4 eighth notes, followed by two quarter notes](img/ex-5-4.png "Figure 1")
+![5 against 4 eighth notes, followed by two quarter notes](img/ex-5-4.png "Figure 3")
 
 In the above figure, we see a measure of common time, where the first two beats of the measure contain 5 eighth notes in the space of 4 eighth notes, and the second half of the measure contains a quarter note on each beat.
 
@@ -101,16 +110,16 @@ The **container,** specified by the square brackets `[]`, defines a period of ti
 
 Our `[4]` gives us a rhythm like:
 
-![a whole note](img/ex-1.png "Figure 2") or, in the piano roll, ![a whole note in piano roll](img/pno-roll-1.png "Figure 3") 
+![a whole note](img/ex-1.png "Figure 2") or, in the piano roll, ![a whole note in piano roll](img/pno-roll-1.png "Figure 4") 
 
 #### Flexible Container
 A container can be divided into child containers, for example, `[[2] [2]]` will divide the container into two. Those child containers have a size of 2, and since the parent container has been given no explicit size, it is **flexible**, and inherits its size from the sum of its children's sizes—in this case, a size of 4. 
 
-![two half notes in piano roll](img/pno-roll-2.png "Figure 4") 
+![two half notes in piano roll](img/pno-roll-2.png "Figure 5") 
 
 To give another example, `[[3] [2]]` will give us a container of size 5, for example, a five beat long rhythm, with a note spanning three beats and a note spanning two beats, like:
 
-![[[3][2]] in piano roll](img/pno-roll-3.png "Figure 5") 
+![[[3][2]] in piano roll](img/pno-roll-3.png "Figure 6") 
 
 #### Fixed Container
 
@@ -120,21 +129,10 @@ You can do this by specifying a size of the parent container, making it a **fixe
 ```
 [4 [3] [2]]
 ```
-![[4[3][2]] in piano roll](img/pno-roll-4.png "Figure 6") 
+![[4[3][2]] in piano roll](img/pno-roll-4.png "Figure 7") 
 
 With a combination of fixed and flexible parent and child containers, we can generate a wide variety of rhythms.
-```
-[2[5] [2]]
-[[] [2]]
-[1[[] []] []]
 
-[5[2[5] [2]]
-[[] [2]]
-[1[[] []] []]]
-```
-![container example in piano roll](img/pno-roll-5.png "Figure 7") 
-or 
-![container example on the staff](img/ex-containers.png "Figure 8") 
 
 #### Container Scale
 
@@ -144,7 +142,7 @@ You can also **scale** the size of a container by a ratio of two positive intege
 ```
 would generate a container of size two with two child containers, followed by a second container of size two with two child containers, this second one being 3/5 the size of the first.
 
-![container scale in piano roll](img/pno-roll-6.png "Figure 9") 
+![container scale in piano roll](img/pno-roll-6.png "Figure 8") 
 
 In this way, Nestup facilitates the creation of looping clips with fragmentary meters in DAWs such as Ableton Live. Note that in the figure above, the end point of the loop is off of Ableton's "grid."
 
@@ -157,15 +155,15 @@ This would be a container of size 2, because it is a parent container with child
 
 A positive integer wrapped in curly braces `{}` evenly divides a container into that many subdivisions. For example, `[4] {3}` might be rendered in conventional western musical notation as:
 
-![a half-note triplet](img/ex-3.png "Figure 10")
+![a half-note triplet](img/ex-3.png "Figure 9")
 
 In the same way, `[4] {1}` gives us:
 
-![a whole note](img/ex-1.png "Figure 11")
+![a whole note](img/ex-1.png "Figure 10")
 
 And `[4] {13}` gives us:
 
-![a 13-let](img/ex-13.png "Figure 12")
+![a 13-let](img/ex-13.png "Figure 11")
 
 *Warning:* A container can only be subdivided with the subdivider if it has no child containers. For example, the expression `[[]] {3}` **is not valid.**
 
@@ -179,11 +177,11 @@ For example, to place the container `[[2] [1]]` on the first beat of a container
 ```
 [] {3 1 [[2] [1]]}
 ```
-![ranged container](img/pno-roll-7.png "Figure 13")
+![ranged container](img/pno-roll-7.png "Figure 12")
 
 `[] {3 1:2 [[2] [1]]}` would stretch the container across two subdivisions. 
 
-![range, length](img/pno-roll-8.png "Figure 14")
+![range, length](img/pno-roll-8.png "Figure 13")
 
 #### Ranged Container Shorthand
 
@@ -208,7 +206,7 @@ and
   4:5
 }
 ```
-![range shorthand](img/pno-shorthand.png "Figure 15")
+![range shorthand](img/pno-shorthand.png "Figure 14")
 
 *Warning:* The size of the ranged container will always be determined by its range expression. For this reason, you can not give a ranged container a fixed size: `{3 1 [2]}` **is not valid**. Additionally, a ranged container cannot have siblings: `{3 1 [] []}` **is not valid**, though it can have children, as demonstrated in the examples above.
 
@@ -226,7 +224,7 @@ The expression above describes a container of size 4 which is empty. We can see 
 ['4]
 [2]
 ```
-![empty](img/pno-empty-1.png "Figure 16")
+![empty](img/pno-empty-1.png "Figure 15")
 
 The **Empty Container** shares many characteristics with its non-empty counterpart: it has a container size, it can have a scale expressed as a ratio of two positive integers, and it can be subdivided using `{}` expressions. 
 
@@ -241,7 +239,7 @@ It is perfectly possible to add rhythmic events into an empty container, however
   16
 }
 ```
-![empty 2](img/pno-empty-2.png "Figure 17")
+![empty 2](img/pno-empty-2.png "Figure 16")
 
 #### Rests
 
@@ -256,7 +254,7 @@ For example,
   4:2 [']
 }
 ```
-![rests](img/pno-roll-10.png "Figure 18") 
+![rests](img/pno-roll-10.png "Figure 17") 
 
 ### Ties and Rotations
 
@@ -270,7 +268,7 @@ In Nestup, ties are written using the underscore `_` and connect sibling contain
 For example:
 `[3] {5} _ [] {3}` will give us:
 
-![tie](img/pno-roll-9.png "Figure 19")
+![tie](img/pno-roll-9.png "Figure 18")
 
 #### Rotation
 
@@ -279,11 +277,12 @@ Once you've subdivided a container, you can offset those subdivisions forward or
 You can see this demonstrated in the colored visualizer element along the bottom of the Ableton Live Nestup device in the following example:
 
 
-![rotate-first](img/first-rotate.gif "Figure 20")
+![rotate-first](img/first-rotate.gif "Figure 19")
 
 Rotating in this subdivided container by 10 would have the same effect as not rotating at all. Rotations can be fractions, so you can rotate by 1/2 of 1 subdivision. This can be a nice way to achieve syncopation.
 
-![rotate-diagram](img/rotationDiagram.png "Figure 21")
+![rotate-diagram](img/rotationDiagram.png "Figure 20")
+*It could be helpful to visualize a grid of subdivisions, shifted over by the rotation distance*
 
 For example, to place a snare drum on beats "2" and "4" of a 4/4 measure, you might write the following expression:
 
@@ -305,13 +304,13 @@ It is also possible to offset a rhythm backwards with `<`, by any ratio of one s
 [4] {3}
 [4] {3 < 1/3}
 ```
-![rotate](img/pno-rotate.png "Figure 22")
+![rotate](img/pno-rotate.png "Figure 21")
 
 You can see in the preceeding example that it appears as if there is a rest at the beginning of the second container. This is due to the first event of the subdivided second container being pushed past the beginning of the container and wrapping around the end of that container. 
 
 This wrap-around effect can be seen in the following animation using the Ableton Live Nestup device. As the rotation distance approaches 1 (3/3), the final event in the container gets closer to wrapping around to the beginning of the container.
 
-![rotate-anim](img/rotate.gif "Figure 23")
+![rotate-anim](img/rotate.gif "Figure 22")
 
 ______
 ## Ableton-specific documentation
