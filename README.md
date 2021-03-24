@@ -35,6 +35,7 @@ to get the repo all set up.
 Most DAWs and other music software are designed to facilitate creating music with rhythmic subdivisions that divide in twos and into threes. However, there are many types of music in the world, such as tabla rhythms from Indian classical music, rhythms by musicians such as Tigran Hamasyan, drawing from Armenian folk traditions, or the nested tuplets common to "New Complexity" composers like Brian Ferneyhough, that do not divide solely into twos and threes. Most of these rhythms are rather difficult, or at least tedious, to program in any DAW.
 
 ![nested quintuplet](img/nested-tup-ex.png "Figure 1")
+
 With Nestup, programming such a rhythm can be quite easy:
 ```
 [2]{5
@@ -43,7 +44,7 @@ With Nestup, programming such a rhythm can be quite easy:
 ```
 ![nested quintuplet](img/nested-tup-ex2.png "Figure 2")
 
-In addition, DAWs that employ looping clips, for example Ableton Live or Logic Pro, facilitate the creation of clips that are defined by a number of 16th note subdivisions, making a loping clip of a "[fragmentary rhythm](https://www.instagram.com/p/CFxKMSMAS22/?utm_source=ig_web_copy_link)" very difficult to create.
+In addition, DAWs that employ looping clips, for example Ableton Live or Logic Pro, facilitate the creation of clips that are defined by a number of 16th note subdivisions, making a looping clip of a "[fragmentary rhythm](https://www.instagram.com/p/CFxKMSMAS22/?utm_source=ig_web_copy_link)" very difficult to create.
 
 Nestup is designed to be a simple and expressive solution for these and other rhythmic needs.
 
