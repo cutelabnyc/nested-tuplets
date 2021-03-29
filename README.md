@@ -316,4 +316,4 @@ This wrap-around effect can be seen in the following animation using the Ableton
 ______
 ## Ableton-specific documentation
 
-If you are using the Nestup Max For Live device to parse your Nestup expressions, please visit the Nestup Max for Live Device Reference [link forthcoming]. 
+If you are using the [Nestup Max For Live device](https://gum.co/nestup) to parse your Nestup expressions, please visit the Nestup Max for Live Device Reference [here](https://compassionate-einstein-4d9aac.netlify.app/). You can find the Live device for purchase [here](https://gum.co/nestup). Thank you, have fun, and be in touch!
