@@ -20,25 +20,19 @@ It's Nestup! The domain specific language for describing and generating nested t
 | `[3] {3 > 1/2}` | Three notes in the space of three beats, offset by half a beat. | ![](./img/cheat-11.png) |
 | `['4] [2]` | An empty container, four beats long, followed by a note two beats long. | ![](./img/cheat-12.png) |
 
-## Getting set up
+## Where am I?
 
-This library uses `yarn` as opposed to `npm`, so before you can do anything else you'll need `yarn` installed on your system. From there simply run
-
-```sh
-yarn install
-```
-
-to get the repo all set up.
+This repo is the home for the Nestup language and the documentation for the language itself. If you are looking for the Ableton Live device, you can find that [here](https://gum.co/nestup), and if you are looking for the online playground, you can find that [here](https://nestup.cutelab.nyc).
 
 ## Why Nestup?
 
-Most DAWs and other music software are designed to facilitate creating music with rhythmic subdivisions that divide in twos and into threes. However, there are many types of music in the world, such as tabla rhythms from Indian classical music, rhythms by musicians such as Tigran Hamasyan, drawing from Armenian folk traditions, or the nested tuplets common to "New Complexity" composers like Brian Ferneyhough, that do not divide solely into twos and threes. Most of these rhythms are rather difficult, or at least tedious, to program in any DAW.
+Most DAWs and other music software are designed to facilitate creating music with rhythmic subdivisions that divide in twos and into threes. However, there are many types of music in the world, such as tabla rhythms from Indian classical music, rhythms by musicians such as Tigran Hamasyan, drawing from Armenian folk traditions, or the nested tuplets common to "New Complexity" composers like Brian Ferneyhough, that do not divide solely into twos and threes. Most of these rhythms are rather difficult, or at least tedious, to program in any DAW. 
 
 ![nested quintuplet](img/nested-tup-ex.png "Figure 1")
 
 With Nestup, programming such a rhythm can be quite easy:
 ```
-[2]{5
+[2] {5
   4:2 {3}
 }
 ```
