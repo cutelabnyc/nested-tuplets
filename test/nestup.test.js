@@ -212,7 +212,7 @@ describe("Nestup", () => {
 		} catch (e) {}
 	});
 
-	it("rejects a list of two or more subcontaines without explicit containers", () => {
+	it("rejects a list of two or more subcontainers without explicit containers", () => {
 		const input = `
 			[ {2} {2} ]
 		`
@@ -221,6 +221,24 @@ describe("Nestup", () => {
 			const parseTree = new RhythmParser().parse(input);
 			const nestup = new Nestup(parseTree);
 			expect.fail("Should have produced a parse error");
+		} catch (e) {}
+	});
+
+	it("parses a slightly complex expression", () => {
+		const input = `
+			[8] {8
+				2:3 {6
+					3 [']
+				}
+				5 [']
+				7 {4}
+			}
+		`
+
+		try {
+			const parseTree = new RhythmParser().parse(input);
+			const nestup = new Nestup(parseTree);
+			expect(nestup).not.to.be.undefined();
 		} catch (e) {}
 	});
 });
