@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { Phrase, RhythmParser, Nestup } = require("./index");
+const { RhythmParser, Nestup } = require("./index");
 const writeOnsetsAsMidi = require("./src/trackWriter");
 const { program } = require('commander');
 program.version('0.1.0');
@@ -14,7 +14,6 @@ function process(text, outputFilePath) {
 	const parser = new RhythmParser();
 	const parseTree = parser.parse(text);
 	const nestup = new Nestup(parseTree);
-	const phrases = parseTree.map(p => new Phrase(p));
 	writeOnsetsAsMidi(nestup, "C3", 512, outputFilePath);
 }
 
