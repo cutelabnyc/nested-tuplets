@@ -44,17 +44,17 @@ nestup ->
 	  _:* {% d => [] %}
 	| container_list_or_subdivisions _:* {% d => d[0] %}
 
-# The containers can be tied together
 container_list_or_subdivisions ->
 	  _:* subdivisions {% d => { return [{ dimension: undefined, subdivisions: d[1] }] } %}
 	| container_list {% d => d[0] %}
 
+# The containers can be tied together
 container_list ->
 	  container
 	| container container_list {% d => { return [d[0]].concat(d[1]) } %}
 	| container _:* %underscore container_list {% d => { d[0].tie = true; return [d[0]].concat(d[3]); } %}
 
-# A container can be sized or unsized (necessary for indexed containers)
+# A container can be sized or unsized (necessary for ranged containers)
 container ->
 	  _:* sized_container {% d => d[1] %}
 	| _:* unsized_container {% d => d[1] %}
