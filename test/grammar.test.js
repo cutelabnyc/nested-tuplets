@@ -208,4 +208,15 @@ describe("Grammar: Generating parse trees", () => {
 			expect.fail("Should have thrown a parse error");
 		} catch (e) {}
 	});
+
+	it ("gets the number of repetitions", () => {
+		const input = `[]{3}:3`;
+		const parser = new RhythmParser();
+		const result = parser.parse(input);
+		const container = result[0];
+
+		expect(container).to.haveOwnProperty("repetition");
+		expect(container).to.haveOwnProperty("repetition").that.equals(3);
+
+	});
 });

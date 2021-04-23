@@ -54,17 +54,21 @@ container_list ->
 	| container container_list {% d => { return [d[0]].concat(d[1]) } %}
 	| container _:* %underscore container_list {% d => { d[0].tie = true; return [d[0]].concat(d[3]); } %}
 
-# A container can be sized or unsized (necessary for ranged containers)
+# A container can be sized or unsized (necessary for ranged containers), and can be repeated
 container ->
-	  _:* sized_container {% d => d[1] %}
+	  _:* sized_container _:* %colon _:* integer {% d => { d[1].repetition = d[5]; return d[1]; } %}
+	| _:* unsized_container _:* %colon _:* integer {% d => { d[1].repetition = d[5]; return d[1]; } %}
+	| _:* sized_container {% d => d[1] %}
 	| _:* unsized_container {% d => d[1] %}
+
 
 # All containers must have either subcontainers or subdivisions, but not both
 sized_container ->
 	  sized_contents_with_subcontainers {% d => d[0] %}
 	| sized_contents _:* subdivisions {% d => { return { dimension: d[0].dimension, empty: d[0].empty, subdivisions: d[2] }} %}
 	| sized_contents {% d => d[0] %}
-
+	
+# A ranged container must be unsized, and cannot be repeated
 unsized_container ->
 	  unsized_contents_with_subcontainers {% d => d[0] %}
 	| unsized_contents _:* subdivisions {% d => { return { dimension: d[0].dimension, empty: d[0].empty, subdivisions: d[2] }} %}

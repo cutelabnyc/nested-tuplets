@@ -45,14 +45,21 @@ module.exports = class Container {
 	}
 
 	get proportionality() {
+		let initialProportionality;
+		
 		if (this._proportionality === "+") {
 			if (this._contents) {
-				return this._contents.reduce((prev, c) => { return prev.add(c.proportionality) }, new Fraction(0)).mul(this._scale);
+				initialProportionality = this._contents.reduce((prev, c) => { return prev.add(c.proportionality) }, new Fraction(0)).mul(this._scale);
 			} else {
-				return this._scale;
+				initialProportionality = this._scale;
 			}
 		} else {
-			return this._proportionality.mul(this._scale);
+			initialProportionality = this._proportionality.mul(this._scale);
+		}
+		if (this._repetition) {
+			return initialProportionality.mul(this._repetition);
+		} else {
+			return initialProportionality;
 		}
 	}
 
