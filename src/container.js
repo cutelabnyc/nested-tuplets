@@ -3,7 +3,14 @@ const Onset = require("./onset");
 const Fraction = require("fraction.js");
 
 module.exports = class Container {
-	constructor(containerDescription, index) {
+	constructor(passedContainerDescription, index) {
+		let containerDescription = passedContainerDescription;
+		if (containerDescription.repetition) {
+			const duplicatedContents = new Array (containerDescription.repetition);
+			delete containerDescription.repetition;
+			duplicatedContents.fill(containerDescription);
+			containerDescription = { dimension: { proportionality: "+", scale: 1 }, contents: duplicatedContents };
+		}
 
 		// Set internal proportionality and scale
 		if (containerDescription.dimension) {
@@ -56,11 +63,7 @@ module.exports = class Container {
 		} else {
 			initialProportionality = this._proportionality.mul(this._scale);
 		}
-		if (this._repetition) {
-			return initialProportionality.mul(this._repetition);
-		} else {
-			return initialProportionality;
-		}
+		return initialProportionality;
 	}
 
 	get scale() {

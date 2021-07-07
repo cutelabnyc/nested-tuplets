@@ -241,4 +241,32 @@ describe("Nestup", () => {
 			expect(nestup).not.to.be.undefined();
 		} catch (e) {}
 	});
+
+	it("parses a repeated container", () => {
+		const input = `
+			[3] : 3
+
+		`
+		const parseTree = new RhythmParser().parse(input);
+		const nestup = new Nestup(parseTree);
+
+		const divisibleTickedEvents = nestup.onOffEvents(30);
+
+		expect(divisibleTickedEvents).to.be.an.instanceOf(Array);
+		expect(divisibleTickedEvents).to.have.length(6);
+		expect(divisibleTickedEvents[0].on).to.equal(true);
+		expect(divisibleTickedEvents[0].time).to.equal(0);
+		expect(divisibleTickedEvents[1].on).to.equal(false);
+		expect(divisibleTickedEvents[1].time).to.equal(10);
+		expect(divisibleTickedEvents[2].on).to.equal(true);
+		expect(divisibleTickedEvents[2].time).to.equal(10);
+		expect(divisibleTickedEvents[3].on).to.equal(false);
+		expect(divisibleTickedEvents[3].time).to.equal(20);
+		expect(divisibleTickedEvents[4].on).to.equal(true);
+		expect(divisibleTickedEvents[4].time).to.equal(20);
+		expect(divisibleTickedEvents[5].on).to.equal(false);
+		expect(divisibleTickedEvents[5].time).to.equal(30);
+
+	});
+
 });
