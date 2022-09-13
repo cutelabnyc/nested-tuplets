@@ -23,7 +23,7 @@
     "pretest": "yarn run build-grammar",
     "prepublishOnly": "yarn run build",
     "build": "yarn run build-grammar && yarn run build-pack",
-    "build-grammar": "mkdir -p src/build && nearleyc grammar/grammar.ne --out ./src/build/grammar.js",
+    "build-grammar": "mkdirp src/build && nearleyc grammar/grammar.ne --out ./src/build/grammar.js",
     "build-pack": "webpack",
     "start": "node cli.js",
     "test": "mocha",
@@ -37,6 +37,7 @@
     "@babel/preset-env": "^7.12.11",
     "babel-loader": "^8.2.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "mkdirp": "^1.0.4",
     "webpack": "^5.11.0",
     "webpack-cli": "^4.2.0"
   },
